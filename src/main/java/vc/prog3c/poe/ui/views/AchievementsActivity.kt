@@ -16,11 +16,12 @@ import com.google.android.material.tabs.TabLayout
 import vc.prog3c.poe.R
 import vc.prog3c.poe.data.models.Achievement
 import vc.prog3c.poe.data.models.AchievementCategory
-import vc.prog3c.poe.data.models.BoosterBucks
+import vc.prog3c.poe.data.models.QuestCoins
 import vc.prog3c.poe.databinding.ActivityAchievementsBinding
 import vc.prog3c.poe.ui.adapters.AchievementAdapter
 import vc.prog3c.poe.ui.viewmodels.AchievementViewModel
 import vc.prog3c.poe.core.utils.CurrencyFormatter
+import vc.prog3c.poe.core.utils.LevelingHelper
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -29,10 +30,6 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binds: ActivityAchievementsBinding
     private lateinit var model: AchievementViewModel
     private lateinit var adapter: AchievementAdapter
-
-
-    // --- Lifecycle
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,21 +40,16 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         setupBottomNavigation()
 
         model = ViewModelProvider(this)[AchievementViewModel::class.java]
-
         observeViewModel()
     }
-
-
-    // --- ViewModel
-
 
     private fun observeViewModel() {
         model.achievements.observe(this) { achievements ->
             adapter.updateAchievements(achievements)
         }
 
-        model.boosterBucks.observe(this) { boosterBucks ->
-            updateBoosterBucksDisplay(boosterBucks)
+        model.questCoins.observe(this) { questCoins ->
+            updateQuestCoinsDisplay(questCoins)
         }
 
         model.error.observe(this) { error ->
@@ -67,17 +59,16 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
-    // --- Internals
-
-
-    private fun updateBoosterBucksDisplay(questCoins: BoosterBucks) {
-        binds.QuestCoinsValue.text = questCoins.availableBalance.toString()
+    private fun updateQuestCoinsDisplay(questCoins: QuestCoins) {
         binds.QuestCoinsValue.text = CurrencyFormatter.format(
-            questCoins.availableBalance * BoosterBucks.CONVERSION_RATE
+            questCoins.availableBalance * QuestCoins.CONVERSION_RATE
         )
-    }
 
+        val (progress, goal) = questCoins.progressToNextLevel
+        binds.coinProgress.max = goal
+        binds.coinProgress.progress = progress
+        binds.levelLabel.text = "Level ${questCoins.level}"
+    }
 
     private fun showAchievementDetails(achievement: Achievement) {
         val message = if (achievement.isCompleted) {
@@ -93,37 +84,33 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         }.show()
     }
 
-
     private fun showRedeemDialog() {
-        val QuestCoins = model.boosterBucks.value ?: return
-        if (QuestCoins.availableBalance < BoosterBucks.MIN_REDEMPTION) {
+        val questCoins = model.questCoins.value ?: return
+        if (questCoins.availableBalance < QuestCoins.MIN_REDEMPTION) {
             Snackbar.make(
                 binds.root,
-                "You need at least ${BoosterBucks.MIN_REDEMPTION} Booster Bucks to redeem",
+                "You need at least ${QuestCoins.MIN_REDEMPTION} Quest Coins to redeem",
                 Snackbar.LENGTH_LONG
             ).show()
             return
         }
 
         val formatter = NumberFormat.getCurrencyInstance(Locale("en", "ZA"))
-        val redeemAmount = QuestCoins.availableBalance * BoosterBucks.CONVERSION_RATE
+        val redeemAmount = questCoins.availableBalance * QuestCoins.CONVERSION_RATE
 
         MaterialAlertDialogBuilder(this).apply {
-            setTitle("Redeem Booster Bucks")
+            setTitle("Redeem Quest Coins")
             setMessage(
-                "You can redeem ${QuestCoins.availableBalance} Booster Bucks for ${
-                    formatter.format(
-                        redeemAmount
-                    )
+                "You can redeem ${questCoins.availableBalance} Quest Coins for ${
+                    formatter.format(redeemAmount)
                 }"
             )
             setPositiveButton("Redeem") { _, _ ->
-                model.redeemBoosterBucks()
+                model.redeemQuestCoins()
             }
             setNegativeButton("Cancel", null)
         }.show()
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -131,14 +118,9 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
                 onBackPressed()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-
-    // --- Event Handlers
-
 
     override fun onClick(view: View?) {
         when (view?.id) {
@@ -146,21 +128,15 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
     private fun setupClickListeners() {
         binds.redeemButton.setOnClickListener(this)
     }
-
-
-    // --- UI Configuration
-
 
     private fun setupToolbar() {
         setSupportActionBar(binds.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Achievements"
     }
-
 
     private fun setupRecyclerView() {
         adapter = AchievementAdapter(emptyList()) { achievement ->
@@ -172,12 +148,11 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-
     private fun setupTabLayout() {
         binds.achievementTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val category = when (tab?.position) {
-                    0 -> null // All
+                    0 -> null
                     1 -> AchievementCategory.USER_MILESTONES
                     2 -> AchievementCategory.CONSISTENCY_HABITS
                     3 -> AchievementCategory.SAVINGS_ACHIEVEMENTS
@@ -194,13 +169,11 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-
-    private fun setupBoosterBucksCard() {
+    private fun setupQuestCoinsCard() {
         binds.redeemButton.setOnClickListener {
             showRedeemDialog()
         }
     }
-
 
     private fun setupBottomNavigation() {
         binds.bottomNavigation.setOnItemSelectedListener { item ->
@@ -227,14 +200,9 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         binds.bottomNavigation.selectedItemId = R.id.nav_achievements
     }
 
-
-    // --- UI
-
-
     private fun setupBindings() {
         binds = ActivityAchievementsBinding.inflate(layoutInflater)
     }
-
 
     private fun setupLayoutUi() {
         setContentView(binds.root)
@@ -248,6 +216,6 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         setupToolbar()
         setupRecyclerView()
         setupTabLayout()
-        setupBoosterBucksCard()
+        setupQuestCoinsCard()
     }
-} 
+}
