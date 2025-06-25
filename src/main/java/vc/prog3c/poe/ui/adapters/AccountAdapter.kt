@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import vc.prog3c.poe.core.utils.CurrencyFormatter
 import vc.prog3c.poe.data.models.Account
 import vc.prog3c.poe.databinding.ItemAccountBinding
 
@@ -31,6 +32,7 @@ class AccountAdapter(
             }
             binding.root.setOnLongClickListener {
                 val account = getItem(adapterPosition)
+                android.util.Log.d("AccountAdapter", "Long press detected for account: ${account.name}")
                 onLongPress(account)
                 true
             }
@@ -38,7 +40,21 @@ class AccountAdapter(
 
         fun bind(account: Account) {
             binding.accountNameTextView.text = account.name
-            binding.accountBalanceTextView.text = "Balance: ${account.balance}"
+            binding.accountBalanceTextView.text = CurrencyFormatter.format(account.balance)
+            
+            // Set transaction count (placeholder for now)
+            binding.accountTransactionsTextView.text = "0 transactions"
+            
+            // Set account icon based on account type (you can customize this)
+            binding.accountIcon.setImageResource(
+                when {
+                    account.name.contains("Savings", ignoreCase = true) -> 
+                        vc.prog3c.poe.R.drawable.ic_savings
+                    account.name.contains("Credit", ignoreCase = true) -> 
+                        vc.prog3c.poe.R.drawable.ic_credit_card
+                    else -> vc.prog3c.poe.R.drawable.ic_account_balance
+                }
+            )
         }
     }
 

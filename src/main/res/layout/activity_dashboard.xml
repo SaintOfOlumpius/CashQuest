@@ -63,11 +63,44 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Budget Card -->
-                <com.google.android.material.card.MaterialCardView
+                <!-- Dashboard Cards ViewPager2 -->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/dashboardCardsViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_marginBottom="16dp"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="24dp" />
+
+                <!-- Page Indicator -->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/cardPageIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    app:tabBackground="@drawable/tab_selector"
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabMinWidth="8dp"
+                    app:tabPadding="4dp" />
+
+                <!-- Legacy ViewPager (hidden for compatibility) -->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
+                    android:visibility="gone" />
+
+                <!-- Legacy elements for backward compatibility -->
+                <!-- Budget Card (hidden, moved to card stack) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/budgetCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:visibility="gone"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="4dp"
                     app:cardBackgroundColor="@color/surface">
@@ -187,28 +220,23 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- ViewPager -->
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp" />
-
-                <!-- Accounts RecyclerView -->
+                <!-- Accounts RecyclerView (hidden, moved to card stack) -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/dashboardAccountsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:clipToPadding="false"
-                    android:nestedScrollingEnabled="false" />
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone" />
 
-                <!-- Savings Goal Card -->
+                <!-- Savings Goal Card (hidden, moved to card stack) -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/savingsGoalCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
+                    android:visibility="gone"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="4dp"
                     app:cardBackgroundColor="@color/surface">
@@ -276,7 +304,6 @@
                             app:indicatorColor="@color/primary"
                             app:trackCornerRadius="12dp" />
 
-                        <!-- The missing savings percentage TextView -->
                         <TextView
                             android:id="@+id/savingsPercentageText"
                             android:layout_width="wrap_content"

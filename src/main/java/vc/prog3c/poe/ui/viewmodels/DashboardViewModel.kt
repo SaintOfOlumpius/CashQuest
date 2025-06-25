@@ -344,6 +344,19 @@ class DashboardViewModel(
         }
     }
 
+    fun addAccount(account: Account) {
+        FirestoreService.account.addAccount(account) { success ->
+            if (success) {
+                val currentAccounts = _accounts.value?.toMutableList() ?: mutableListOf()
+                currentAccounts.add(account)
+                _accounts.postValue(currentAccounts)
+                emitUpdatedState()
+            } else {
+                _uiState.value = Failure("Failed to add account")
+            }
+        }
+    }
+
     fun deleteAccount(accountId: String) {
         viewModelScope.launch {
             try {
