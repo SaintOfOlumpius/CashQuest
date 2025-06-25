@@ -13,7 +13,6 @@ import com.google.android.material.snackbar.Snackbar
 import vc.prog3c.poe.R
 import vc.prog3c.poe.databinding.ActivityManageGoalsBinding
 import vc.prog3c.poe.ui.viewmodels.GoalViewModel
-import vc.prog3c.poe.core.utils.CurrencyFormatter
 
 class ManageGoalsActivity : AppCompatActivity(), View.OnClickListener {
 

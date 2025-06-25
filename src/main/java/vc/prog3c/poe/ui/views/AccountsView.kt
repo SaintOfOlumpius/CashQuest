@@ -11,7 +11,6 @@ import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.toColorInt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -26,14 +25,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import vc.prog3c.poe.R
-import vc.prog3c.poe.core.utils.Blogger
 import vc.prog3c.poe.data.models.Account
 import vc.prog3c.poe.databinding.ActivityAccountsBinding
 import vc.prog3c.poe.ui.adapters.AccountAdapter
 import vc.prog3c.poe.ui.viewmodels.AccountsUiState
 import vc.prog3c.poe.ui.viewmodels.AccountsViewModel
-import java.text.NumberFormat
-import java.util.Locale
 import java.util.UUID
 import vc.prog3c.poe.core.utils.CurrencyFormatter
 

@@ -19,7 +19,6 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
 import android.app.AlertDialog
-import android.widget.Toast
 import vc.prog3c.poe.R
 import vc.prog3c.poe.data.models.Category
 import vc.prog3c.poe.data.models.CategoryType

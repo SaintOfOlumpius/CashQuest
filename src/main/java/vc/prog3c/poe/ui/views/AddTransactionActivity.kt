@@ -1,52 +1,5 @@
 package vc.prog3c.poe.ui.views
 
-import android.app.TimePickerDialog
-import android.net.Uri
-import android.os.Bundle
-import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.android.gms.tasks.Tasks
-import vc.prog3c.poe.R
-import vc.prog3c.poe.data.models.Transaction
-import vc.prog3c.poe.data.models.TransactionType
-import vc.prog3c.poe.data.models.Category
-import vc.prog3c.poe.data.models.CategoryType
-import vc.prog3c.poe.databinding.ActivityAddTransactionBinding
-import vc.prog3c.poe.ui.viewmodels.TransactionState
-import vc.prog3c.poe.ui.viewmodels.TransactionViewModel
-import vc.prog3c.poe.ui.viewmodels.CategoryViewModel
-import vc.prog3c.poe.ui.viewmodels.DashboardViewModel
-import vc.prog3c.poe.ui.adapters.PhotoAdapter
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.UUID
-import java.util.Date
-import java.util.Calendar
-import android.Manifest
-import android.content.pm.PackageManager
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import java.io.File
-import android.content.Intent
-import android.provider.MediaStore
-import android.app.AlertDialog
-import com.google.android.material.datepicker.MaterialDatePicker
-import androidx.core.content.FileProvider
-import androidx.core.app.ActivityCompat
-import android.os.Environment
-import android.util.Log
-import java.io.IOException
 //
 //class AddTransactionActivity : AppCompatActivity() {
 //    private lateinit var binds: ActivityAddTransactionBinding

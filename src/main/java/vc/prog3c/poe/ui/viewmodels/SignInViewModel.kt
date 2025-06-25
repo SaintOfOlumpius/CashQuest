@@ -1,6 +1,5 @@
 package vc.prog3c.poe.ui.viewmodels
 
-import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +9,6 @@ import kotlinx.coroutines.withTimeout
 import vc.prog3c.poe.core.models.SignInCredentials
 import vc.prog3c.poe.core.services.AuthService
 import vc.prog3c.poe.core.utils.Blogger
-import vc.prog3c.poe.data.services.FirestoreService
 
 class SignInViewModel(
     private val authService: AuthService = AuthService()

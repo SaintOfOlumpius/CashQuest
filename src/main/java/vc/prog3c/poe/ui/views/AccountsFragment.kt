@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import vc.prog3c.poe.databinding.FragmentAccountsBinding
 import vc.prog3c.poe.ui.adapters.AccountAdapter
-import vc.prog3c.poe.data.models.Account
 import vc.prog3c.poe.ui.viewmodels.DashboardViewModel
 
 class AccountsFragment : Fragment() {

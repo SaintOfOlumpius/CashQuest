@@ -1,6 +1,5 @@
 package vc.prog3c.poe.core.utils
 
-import kotlin.math.floor
 import kotlin.math.pow
 
 /**

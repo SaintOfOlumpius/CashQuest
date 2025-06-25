@@ -1,44 +1,26 @@
 {
   "project_info": {
-    "project_number": "594873101790",
-    "project_id": "bankboosta",
-    "storage_bucket": "bankboosta.firebasestorage.app"
+    "project_number": "232716148528",
+    "project_id": "cashquest-8514f",
+    "storage_bucket": "cashquest-8514f.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:594873101790:android:2f391fbe87f37429bd014f",
+        "mobilesdk_app_id": "1:232716148528:android:fe6f5855a9c7776c3e72f5",
         "android_client_info": {
-          "package_name": "vc.prog3c.poe"
+          "package_name": "com.opsc6311.poe"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "594873101790-6n7cgl4a86gvrrkv489doke2stipb7ak.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "vc.prog3c.poe",
-            "certificate_hash": "43901f348102d308a9d6ec31edd403f87bb0c7d0"
-          }
-        },
-        {
-          "client_id": "594873101790-afdjohgaqgl30ke7tq3bq2qrfjk2t1gk.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDXeuCv-cixk2jER0vMd-9XcLRzdKn7tes"
+          "current_key": "AIzaSyAyHhBfJWil3x-VnT0_b-qb_dq3yb1VHNo"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "594873101790-afdjohgaqgl30ke7tq3bq2qrfjk2t1gk.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

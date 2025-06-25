@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "vc.prog3c.poe"
+    namespace = "com.opsc6311.poe"
     compileSdk = 35
 
     viewBinding{
@@ -16,7 +16,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "vc.prog3c.poe"
+        applicationId = "com.opsc6311.poe"
         minSdk = 29
         targetSdk = 35
         versionCode = 3

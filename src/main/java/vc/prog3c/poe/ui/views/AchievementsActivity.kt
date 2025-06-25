@@ -41,11 +41,48 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         model = ViewModelProvider(this)[AchievementViewModel::class.java]
 
         observeViewModel()
+        
+        // Add entrance animation
+        addEntranceAnimations()
+    }
+
+    private fun addEntranceAnimations() {
+        // Simple fade-in animation for the quest coins card
+        binds.questCoinsCard.alpha = 0f
+        binds.questCoinsCard.animate()
+            .alpha(1f)
+            .setDuration(600)
+            .setStartDelay(200)
+            .start()
+
+        // Simple fade-in animation for stats cards
+        val statsCards = listOf(
+            binds.root.findViewById<View>(R.id.completedCount)?.parent as? View,
+            binds.root.findViewById<View>(R.id.totalCount)?.parent as? View
+        ).filterNotNull()
+
+        statsCards.forEachIndexed { index, card ->
+            card.alpha = 0f
+            card.animate()
+                .alpha(1f)
+                .setDuration(400)
+                .setStartDelay(400 + (index * 100))
+                .start()
+        }
+
+        // Simple fade-in animation for the tab layout
+        binds.achievementTabs.alpha = 0f
+        binds.achievementTabs.animate()
+            .alpha(1f)
+            .setDuration(500)
+            .setStartDelay(600)
+            .start()
     }
 
     private fun observeViewModel() {
         model.achievements.observe(this) { achievements ->
             adapter.updateAchievements(achievements)
+            updateStatsCards(achievements)
         }
 
         model.questCoins.observe(this) { questCoins ->
@@ -60,15 +97,83 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun updateQuestCoinsDisplay(questCoins: QuestCoins) {
-        binds.QuestCoinsValue.text = questCoins.availableBalance.toString()
-        binds.QuestCoinsValue.text = CurrencyFormatter.format(
+        // Animate the currency value change
+        val currentValue = binds.QuestCoinsValue.text.toString()
+        val newValue = CurrencyFormatter.format(
             questCoins.availableBalance * QuestCoins.CONVERSION_RATE
         )
+        
+        if (currentValue != newValue) {
+            binds.QuestCoinsValue.animate()
+                .alpha(0f)
+                .setDuration(200)
+                .withEndAction {
+                    binds.QuestCoinsValue.text = newValue
+                    binds.QuestCoinsValue.animate()
+                        .alpha(1f)
+                        .setDuration(200)
+                        .start()
+                }
+                .start()
+        }
 
         val (level, levelName, progressPercent) = calculateLevel(questCoins.availableBalance)
 
-        binds.levelLabel.text = "Level $level $levelName"
+        // Animate level change
+        val newLevelText = "Level $level $levelName"
+        if (binds.levelChip.text != newLevelText) {
+            binds.levelChip.animate()
+                .alpha(0f)
+                .setDuration(200)
+                .withEndAction {
+                    binds.levelChip.text = newLevelText
+                    binds.levelChip.animate()
+                        .alpha(1f)
+                        .setDuration(200)
+                        .start()
+                }
+                .start()
+        }
+
+        // Update progress text
+        binds.progressText.text = "$progressPercent%"
+
+        // Animate progress bar
+        binds.coinProgress.animate()
+            .setDuration(1000)
+            .start()
         binds.coinProgress.progress = progressPercent
+    }
+
+    private fun updateStatsCards(achievements: List<Achievement>) {
+        val completedCount = achievements.count { it.isCompleted }
+        val totalCount = achievements.size
+
+        // Animate completed count
+        binds.completedCount.animate()
+            .alpha(0f)
+            .setDuration(200)
+            .withEndAction {
+                binds.completedCount.text = completedCount.toString()
+                binds.completedCount.animate()
+                    .alpha(1f)
+                    .setDuration(200)
+                    .start()
+            }
+            .start()
+
+        // Animate total count
+        binds.totalCount.animate()
+            .alpha(0f)
+            .setDuration(200)
+            .withEndAction {
+                binds.totalCount.text = totalCount.toString()
+                binds.totalCount.animate()
+                    .alpha(1f)
+                    .setDuration(200)
+                    .start()
+            }
+            .start()
     }
 
     // Dynamic leveling system based on available balance
@@ -112,8 +217,24 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
 
         MaterialAlertDialogBuilder(this).apply {
             setTitle(achievement.title)
-            setMessage("$message\n\n${achievement.description}")
+            setMessage("$message\n\n${achievement.description}\n\nReward: ${achievement.boosterBucksReward} Quest Coins")
             setPositiveButton("OK", null)
+            if (!achievement.isCompleted) {
+                setNegativeButton("Track Progress") { _, _ ->
+                    showProgressTrackingDialog(achievement)
+                }
+            }
+        }.show()
+    }
+
+    private fun showProgressTrackingDialog(achievement: Achievement) {
+        MaterialAlertDialogBuilder(this).apply {
+            setTitle("Track Progress")
+            setMessage("Would you like to manually update your progress for '${achievement.title}'?")
+            setPositiveButton("Update") { _, _ ->
+                Snackbar.make(binds.root, "Progress tracking feature coming soon!", Snackbar.LENGTH_LONG).show()
+            }
+            setNegativeButton("Cancel", null)
         }.show()
     }
 
@@ -170,7 +291,7 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
     private fun setupToolbar() {
         setSupportActionBar(binds.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Achievements"
+        supportActionBar?.title = "🏆 Achievements"
     }
 
     private fun setupRecyclerView() {
@@ -180,6 +301,20 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         binds.achievementsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@AchievementsActivity)
             adapter = this@AchievementsActivity.adapter
+            // Add smooth scrolling
+            setHasFixedSize(true)
+            // Add item decoration for better spacing
+            addItemDecoration(object : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(
+                    outRect: android.graphics.Rect,
+                    view: View,
+                    parent: androidx.recyclerview.widget.RecyclerView,
+                    state: androidx.recyclerview.widget.RecyclerView.State
+                ) {
+                    outRect.top = 8
+                    outRect.bottom = 8
+                }
+            })
         }
     }
 
@@ -198,8 +333,12 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 adapter.filterByCategory(category)
             }
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // No animation needed
+            }
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // No animation needed
+            }
         })
     }
 

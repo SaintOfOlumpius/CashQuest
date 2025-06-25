@@ -23,7 +23,6 @@ import vc.prog3c.poe.data.models.Transaction
 import vc.prog3c.poe.data.models.TransactionType
 import vc.prog3c.poe.databinding.ActivityAccountDetailsBinding
 import vc.prog3c.poe.ui.viewmodels.AccountDetailsViewModel
-import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.TimeUnit

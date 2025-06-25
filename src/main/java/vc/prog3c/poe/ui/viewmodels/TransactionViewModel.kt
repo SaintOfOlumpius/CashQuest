@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -14,8 +13,6 @@ import vc.prog3c.poe.data.models.TransactionType
 import java.util.*
 import vc.prog3c.poe.data.models.SortOption
 import vc.prog3c.poe.core.utils.CurrencyFormatter
-import vc.prog3c.poe.data.services.AchievementEvaluator
-import vc.prog3c.poe.ui.viewmodels.AchievementViewModel
 import vc.prog3c.poe.data.models.Account
 import vc.prog3c.poe.data.services.FirestoreService
 

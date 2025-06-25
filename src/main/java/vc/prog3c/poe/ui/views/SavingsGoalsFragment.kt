@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import vc.prog3c.poe.databinding.FragmentSavingsGoalsBinding
 import vc.prog3c.poe.ui.adapters.SavingsGoalAdapter
-import vc.prog3c.poe.data.models.SavingsGoal
 import vc.prog3c.poe.ui.viewmodels.DashboardViewModel
 
 class SavingsGoalsFragment : Fragment() {

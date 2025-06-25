@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import vc.prog3c.poe.core.services.AuthService
 import vc.prog3c.poe.data.models.Category
-import vc.prog3c.poe.data.models.CategoryType
 
 class CategoryViewModel(
     private val authService: AuthService = AuthService(),

@@ -100,4 +100,17 @@
     <!-- Income and Expense Colors -->
     <color name="income_color">#5DD62C</color>
     <color name="expense_color">#F44336</color>
+
+    <!-- Achievements Enhanced Colors -->
+    <color name="quest_coins_stroke">#FFD700</color>
+    <color name="level_chip_background">#FF6B35</color>
+    <color name="progress_track_light">#80FFFFFF</color>
+    <color name="progress_indicator_bright">#FFFFFF</color>
+    <color name="redeem_button_background">#FF6B35</color>
+    <color name="surface_light">#F5F5F5</color>
+    <color name="shadow_dark">#40000000</color>
+    <color name="achievement_stroke">#FFD700</color>
+    <color name="category_badge_background">#FF6B35</color>
+    <color name="progress_track_dark">#40FFFFFF</color>
+    <color name="progress_indicator_achievement">#FFD700</color>
 </resources>

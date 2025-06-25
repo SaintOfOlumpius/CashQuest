@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -17,20 +16,11 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import vc.prog3c.poe.R
-import vc.prog3c.poe.core.utils.SeedData
 import vc.prog3c.poe.databinding.ActivityProfileBinding
 import vc.prog3c.poe.ui.viewmodels.AuthViewModel
-import vc.prog3c.poe.data.models.Category
-import vc.prog3c.poe.data.models.TransactionType
 import vc.prog3c.poe.data.repository.CategoryRepository
 import vc.prog3c.poe.data.repository.TransactionRepository
-import java.util.*
 import android.util.Base64
 import kotlinx.coroutines.launch
 
