@@ -21,7 +21,6 @@ import vc.prog3c.poe.databinding.ActivityAchievementsBinding
 import vc.prog3c.poe.ui.adapters.AchievementAdapter
 import vc.prog3c.poe.ui.viewmodels.AchievementViewModel
 import vc.prog3c.poe.core.utils.CurrencyFormatter
-import vc.prog3c.poe.core.utils.LevelingHelper
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -40,6 +39,7 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         setupBottomNavigation()
 
         model = ViewModelProvider(this)[AchievementViewModel::class.java]
+
         observeViewModel()
     }
 
@@ -60,14 +60,47 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun updateQuestCoinsDisplay(questCoins: QuestCoins) {
+        binds.QuestCoinsValue.text = questCoins.availableBalance.toString()
         binds.QuestCoinsValue.text = CurrencyFormatter.format(
             questCoins.availableBalance * QuestCoins.CONVERSION_RATE
         )
 
-        val (progress, goal) = questCoins.progressToNextLevel
-        binds.coinProgress.max = goal
-        binds.coinProgress.progress = progress
-        binds.levelLabel.text = "Level ${questCoins.level}"
+        val (level, levelName, progressPercent) = calculateLevel(questCoins.availableBalance)
+
+        binds.levelLabel.text = "Level $level $levelName"
+        binds.coinProgress.progress = progressPercent
+    }
+
+    // Dynamic leveling system based on available balance
+    private fun calculateLevel(balance: Int): Triple<Int, String, Int> {
+        // Example leveling logic - you can customize the thresholds and names
+        val levels = listOf(
+            0 to "Novice",
+            100 to "Apprentice",
+            250 to "Adventurer",
+            500 to "Hero",
+            1000 to "Legend",
+            2000 to "Mythic"
+        )
+
+        var currentLevel = 0
+        var currentName = "Novice"
+        var nextLevelThreshold = 100
+
+        for (i in levels.indices) {
+            if (balance >= levels[i].first) {
+                currentLevel = i + 1
+                currentName = levels[i].second
+                nextLevelThreshold = if (i + 1 < levels.size) levels[i + 1].first else levels[i].first
+            } else break
+        }
+
+        // Calculate progress percentage to next level
+        val prevThreshold = if (currentLevel - 1 >= 0) levels[currentLevel - 1].first else 0
+        val range = nextLevelThreshold - prevThreshold
+        val progress = if (range > 0) ((balance - prevThreshold) * 100 / range) else 100
+
+        return Triple(currentLevel, currentName, progress.coerceIn(0, 100))
     }
 
     private fun showAchievementDetails(achievement: Achievement) {
@@ -102,7 +135,9 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
             setTitle("Redeem Quest Coins")
             setMessage(
                 "You can redeem ${questCoins.availableBalance} Quest Coins for ${
-                    formatter.format(redeemAmount)
+                    formatter.format(
+                        redeemAmount
+                    )
                 }"
             )
             setPositiveButton("Redeem") { _, _ ->
@@ -152,7 +187,7 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         binds.achievementTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val category = when (tab?.position) {
-                    0 -> null
+                    0 -> null // All
                     1 -> AchievementCategory.USER_MILESTONES
                     2 -> AchievementCategory.CONSISTENCY_HABITS
                     3 -> AchievementCategory.SAVINGS_ACHIEVEMENTS
@@ -163,7 +198,6 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 adapter.filterByCategory(category)
             }
-
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })

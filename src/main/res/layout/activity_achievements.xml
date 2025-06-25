@@ -58,8 +58,9 @@
                         android:textStyle="bold"
                         android:textColor="@color/text_primary" />
 
+                    <!-- Formatted currency display -->
                     <TextView
-                        android:id="@+id/quest_coins_value"
+                        android:id="@+id/QuestCoinsValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -67,14 +68,18 @@
                         android:textStyle="bold"
                         android:textColor="@color/primary" />
 
+                    <!-- Raw available balance (optional, can remove if confusing) -->
+                    <!--
                     <TextView
-                        android:id="@+id/QuestCoinsValue"
+                        android:id="@+id/quest_coins_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:textSize="16sp"
                         android:textColor="@color/text_secondary" />
+                    -->
 
+                    <!-- Progress bar showing progress toward next level -->
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/coinProgress"
                         android:layout_width="match_parent"
@@ -85,11 +90,12 @@
                         app:indicatorColor="@color/primary"
                         app:trackColor="@color/primary_dark" />
 
+                    <!-- Level label -->
                     <TextView
                         android:id="@+id/levelLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Level 3 Adventurer"
+                        android:text="Level 1 Adventurer"
                         android:textColor="@color/text_secondary"
                         android:textSize="16sp"
                         android:textStyle="italic"
