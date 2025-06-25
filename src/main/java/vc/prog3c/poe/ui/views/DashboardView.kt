@@ -29,7 +29,7 @@ import java.util.*
 class DashboardView : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binds: ActivityDashboardBinding
-    private lateinit var model: DashboardViewModel
+    lateinit var model: DashboardViewModel
     private lateinit var achievementViewModel: AchievementViewModel
     private lateinit var dashboardAccountAdapter: AccountAdapter
 
@@ -66,8 +66,9 @@ class DashboardView : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        registerReceiver(profilePictureReceiver, IntentFilter("PROFILE_PICTURE_UPDATED"))
-        loadDashboardProfilePicture()
+        val filter = IntentFilter("PROFILE_PICTURE_UPDATED")
+        registerReceiver(profilePictureReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+
     }
 
     override fun onDestroy() {
