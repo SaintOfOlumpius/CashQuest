@@ -87,4 +87,9 @@
     <string name="source">Source</string>
     <string name="description_optional">Description (Optional)</string>
     <string name="photos_optional">Photos (Optional)</string>
+
+
+
+    <string name="profile_image">Profile Image</string>
+    <string name="add_account">Add Account</string>
 </resources>
