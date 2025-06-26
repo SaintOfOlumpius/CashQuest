@@ -103,20 +103,31 @@ class AchievementViewModel(
             _error.value = null
             
             try {
+                println("🔍 Starting to load achievements...")
+                
                 // First, ensure achievements are seeded
+                println("🌱 Seeding achievements...")
                 seedService.seedAchievements()
                 
+                println("📋 Querying Firestore for achievements...")
                 val snapshot = db.collection("achievements")
-                    .whereEqualTo("isPublic", true)
                     .get()
                     .await()
                 
+                println("📊 Found ${snapshot.documents.size} achievements in Firestore")
+                
                 val achievementList = snapshot.documents.mapNotNull { doc ->
-                    doc.toObject(Achievement::class.java)
+                    val achievement = doc.toObject(Achievement::class.java)
+                    println("🏆 Achievement: ${achievement?.title} (ID: ${achievement?.id})")
+                    achievement
                 }.sortedBy { it.category }
                 
+                println("✅ Loaded ${achievementList.size} achievements successfully")
                 _achievements.value = achievementList
+                
             } catch (e: Exception) {
+                println("❌ Error loading achievements: ${e.message}")
+                e.printStackTrace()
                 _error.value = "Failed to load achievements: ${e.message}"
             } finally {
                 _isLoading.value = false

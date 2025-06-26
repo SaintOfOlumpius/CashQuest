@@ -2,7 +2,6 @@ package com.opsc6311.poe.ui.views
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -98,25 +97,30 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun observeViewModel() {
         model.achievements.observe(this) { achievements ->
+            println("🎯 AchievementsActivity: Received ${achievements.size} achievements")
             filterAchievements()
             updateStatsCards(achievements)
         }
 
         model.userAchievements.observe(this) { userAchievements ->
+            println("👤 AchievementsActivity: Received ${userAchievements.size} user achievements")
             filterAchievements()
         }
 
         model.questCoins.observe(this) { questCoins ->
+            println("💰 AchievementsActivity: Received quest coins: ${questCoins.currentBalance}")
             updateQuestCoinsDisplay(questCoins)
         }
 
         model.error.observe(this) { error ->
             error?.let {
+                println("❌ AchievementsActivity: Error: $it")
                 Snackbar.make(binds.root, it, Snackbar.LENGTH_LONG).show()
             }
         }
 
         model.isLoading.observe(this) { isLoading ->
+            println("⏳ AchievementsActivity: Loading state: $isLoading")
             // Show/hide loading indicator
             if (isLoading) {
                 // You can add a loading indicator here if needed
@@ -126,6 +130,7 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         // Observe newly completed achievements for celebrations
         model.newAchievementUnlocked.observe(this) { achievement ->
             achievement?.let {
+                println("🎉 AchievementsActivity: New achievement unlocked: ${achievement.title}")
                 showAchievementCelebration(it)
             }
         }
@@ -133,6 +138,7 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         // Observe level up events
         model.levelUp.observe(this) { level ->
             if (level > 0) {
+                println("📈 AchievementsActivity: Level up to level $level")
                 showLevelUpCelebration(level)
             }
         }
@@ -391,6 +397,16 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
                 seedAchievements()
                 true
             }
+            R.id.action_test_loading -> {
+                testAchievementLoading()
+                Snackbar.make(binds.root, "Testing achievement loading...", Snackbar.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_test_dummy -> {
+                testWithDummyData()
+                Snackbar.make(binds.root, "Testing with dummy data...", Snackbar.LENGTH_SHORT).show()
+                true
+            }
             R.id.action_filter_all -> {
                 currentFilter = null
                 filterAchievements()
@@ -471,14 +487,55 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
     private fun seedAchievements() {
         CoroutineScope(Dispatchers.Main).launch {
             try {
+                println("🌱 Manual seeding triggered...")
                 val seedService = AchievementSeedService()
                 seedService.seedAchievements()
+                println("✅ Manual seeding completed")
                 Snackbar.make(binds.root, "Achievements seeded successfully!", Snackbar.LENGTH_SHORT).show()
                 refreshAchievements()
             } catch (e: Exception) {
+                println("❌ Manual seeding failed: ${e.message}")
+                e.printStackTrace()
                 Snackbar.make(binds.root, "Failed to seed achievements: ${e.message}", Snackbar.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun testAchievementLoading() {
+        println("🧪 Testing achievement loading...")
+        model.refreshData()
+        
+        // Also test with dummy data to see if UI works
+        testWithDummyData()
+    }
+
+    private fun testWithDummyData() {
+        println("🧪 Testing with dummy data...")
+        val dummyAchievements = listOf(
+            Achievement(
+                id = "test_1",
+                title = "Test Achievement 1",
+                description = "This is a test achievement",
+                category = AchievementCategory.USER_MILESTONES,
+                questCoinsReward = 50,
+                progress = 1,
+                requiredProgress = 1,
+                isCompleted = true
+            ),
+            Achievement(
+                id = "test_2",
+                title = "Test Achievement 2",
+                description = "This is another test achievement",
+                category = AchievementCategory.CONSISTENCY_HABITS,
+                questCoinsReward = 75,
+                progress = 3,
+                requiredProgress = 7,
+                isCompleted = false
+            )
+        )
+        
+        println("🧪 Submitting ${dummyAchievements.size} dummy achievements to adapter...")
+        adapter.submitList(dummyAchievements)
     }
 
     private fun setupRecyclerView() {
@@ -614,6 +671,12 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         val allAchievements = model.achievements.value ?: emptyList()
         val userAchievements = model.userAchievements.value ?: emptyList()
         
+        println("🔍 Filtering achievements:")
+        println("   - All achievements: ${allAchievements.size}")
+        println("   - User achievements: ${userAchievements.size}")
+        println("   - Current filter: $currentFilter")
+        println("   - Search query: '$searchQuery'")
+        
         // Merge achievements with user progress
         val mergedAchievements = allAchievements.map { achievement ->
             val userAchievement = userAchievements.find { it.id == achievement.id }
@@ -624,6 +687,8 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
             )
         }
         
+        println("   - Merged achievements: ${mergedAchievements.size}")
+        
         // Apply filters
         val filteredAchievements = mergedAchievements.filter { achievement ->
             val matchesCategory = currentFilter == null || achievement.category == currentFilter
@@ -633,6 +698,9 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
             
             matchesCategory && matchesSearch
         }
+        
+        println("   - Filtered achievements: ${filteredAchievements.size}")
+        println("   - Submitting to adapter...")
         
         adapter.submitList(filteredAchievements)
     }
@@ -662,6 +730,7 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun refreshAchievements() {
+        println("🔄 Refreshing achievements...")
         model.refreshData()
         binds.swipeRefreshLayout.isRefreshing = false
     }

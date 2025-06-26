@@ -14,6 +14,14 @@
         android:title="Seed Achievements" />
 
     <item
+        android:id="@+id/action_test_loading"
+        android:title="Test Loading" />
+
+    <item
+        android:id="@+id/action_test_dummy"
+        android:title="Test Dummy Data" />
+
+    <item
         android:id="@+id/action_filter_all"
         android:title="All" />
 
