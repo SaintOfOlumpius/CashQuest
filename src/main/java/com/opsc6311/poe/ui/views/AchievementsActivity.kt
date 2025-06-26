@@ -2,6 +2,7 @@ package com.opsc6311.poe.ui.views
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -589,7 +590,7 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
     private fun setupSwipeRefresh() {
         binds.swipeRefreshLayout.setOnRefreshListener {
             // Refresh achievements and quest coins
-            model.refresh()
+            model.refreshData()
             
             // Stop refreshing after a delay
             binds.swipeRefreshLayout.postDelayed({

@@ -196,10 +196,10 @@ class AchievementViewModel(
     }
 
     private fun checkForNewlyCompletedAchievements(userAchievements: List<Achievement>) {
-        val newlyCompleted = userAchievements.filter { 
+        val newlyCompleted = userAchievements.filter {
             it.isCompleted && it.completedAt != null 
         }.filter { achievement ->
-            val timeSinceCompletion = System.currentTimeMillis() - achievement.completedAt.toDate().time
+            val timeSinceCompletion = System.currentTimeMillis() - (achievement.completedAt?.toDate()?.time ?: 0L)
             timeSinceCompletion < 24 * 60 * 60 * 1000 // Within 24 hours
         }
         
