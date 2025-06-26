@@ -181,7 +181,9 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:background="@android:color/transparent" />
+                android:background="@android:color/transparent"
+                android:contentDescription="Dashboard accounts list"
+                android:importantForAccessibility="yes" />
 
             <!-- Enhanced Empty State -->
             <LinearLayout

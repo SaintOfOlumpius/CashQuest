@@ -159,6 +159,8 @@
         android:orientation="horizontal"
         android:visibility="gone"
         android:layout_marginBottom="24dp"
+        android:contentDescription="List of selected photos for this income"
+        android:importantForAccessibility="yes"
         tools:listitem="@layout/item_photo"
         tools:itemCount="3"
         tools:visibility="visible"/>

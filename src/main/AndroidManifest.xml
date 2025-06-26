@@ -25,7 +25,7 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
-        android:name="vc.prog3c.com.opsc6311.poe.BudgetApp"
+        android:name="com.opsc6311.poe.BudgetApp"
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -38,10 +38,10 @@
         tools:replace="android:appComponentFactory"
         tools:targetApi="31">
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.DashboardActivity"
+            android:name="com.opsc6311.poe.ui.views.DashboardActivity"
             android:exported="false" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.TransactionUpsertActivity"
+            android:name="com.opsc6311.poe.ui.views.TransactionUpsertActivity"
             android:exported="false" /> <!-- Directory Provider -->
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -62,80 +62,72 @@
                 android:resource="@xml/file_paths" />
         </provider> <!-- Activities -->
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.SplashActivity"
+            android:name="com.opsc6311.poe.ui.views.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.SignInActivity"
+            android:name="com.opsc6311.poe.ui.views.SignInActivity"
             android:exported="true"></activity>
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.SignUpActivity"
+            android:name="com.opsc6311.poe.ui.views.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.CompleteProfileView"
+            android:name="com.opsc6311.poe.ui.views.CompleteProfileView"
             android:exported="false" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.GoalSettingView"
+            android:name="com.opsc6311.poe.ui.views.GoalSettingView"
             android:exported="false" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.DashboardView"
+            android:name="com.opsc6311.poe.ui.views.DashboardView"
             android:exported="true"
             android:theme="@style/Theme.BudgetApp.NoActionBar" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.TransactionsActivity"
+            android:name="com.opsc6311.poe.ui.views.TransactionsActivity"
             android:exported="false"
             android:label="Transactions"
             android:parentActivityName=".ui.views.AccountDetailsActivity" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.ProfileActivity"
+            android:name="com.opsc6311.poe.ui.views.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.AccountsView"
+            android:name="com.opsc6311.poe.ui.views.AccountsView"
             android:exported="false" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.GraphView"
+            android:name="com.opsc6311.poe.ui.views.GraphView"
             android:exported="false" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.AccountDetailsView"
+            android:name="com.opsc6311.poe.ui.views.AccountDetailsView"
             android:exported="false" />
         <activity
-            android:name=".ui.views.AddTransactionActivity"
+            android:name="com.opsc6311.poe.ui.views.AddTransactionActivity"
             android:exported="false"
             android:theme="@style/Theme.BudgetApp.NoActionBar" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.TransactionDetailsActivity"
+            android:name="com.opsc6311.poe.ui.views.TransactionDetailsActivity"
             android:exported="false" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.ManageGoalsActivity"
+            android:name="com.opsc6311.poe.ui.views.ManageGoalsActivity"
             android:exported="false"
             android:theme="@style/Theme.BudgetApp.NoActionBar" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.AchievementsActivity"
+            android:name="com.opsc6311.poe.ui.views.AchievementsActivity"
             android:exported="false" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.CategoryManagementActivity"
+            android:name="com.opsc6311.poe.ui.views.CategoryManagementActivity"
             android:exported="false"
             android:label="Manage Categories"
-            android:parentActivityName="vc.prog3c.com.opsc6311.poe.ui.views.DashboardView" />
+            android:parentActivityName="com.opsc6311.poe.ui.views.DashboardView" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.PhotoViewerActivity"
+            android:name="com.opsc6311.poe.ui.views.PhotoViewerActivity"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name="vc.prog3c.com.opsc6311.poe.ui.views.ForgotPasswordActivity"
-            android:exported="false" /> <!-- Firebase Messaging Service -->
-        <service
-            android:name=".services.FirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+            android:name="com.opsc6311.poe.ui.views.ForgotPasswordActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -196,7 +196,9 @@
         android:layout_height="wrap_content"
         android:minHeight="100dp"
         android:maxHeight="200dp"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="24dp"
+        android:contentDescription="List of selected photos for this expense"
+        android:importantForAccessibility="yes" />
 
     <!-- Submit Button -->
     <com.google.android.material.button.MaterialButton

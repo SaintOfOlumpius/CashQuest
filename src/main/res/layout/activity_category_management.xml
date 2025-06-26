@@ -40,6 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:clipToPadding="false"
+                android:contentDescription="List of categories"
+                android:importantForAccessibility="yes"
                 app:layout_constraintBottom_toTopOf="@id/addCategoryButton"
                 app:layout_constraintTop_toTopOf="parent" />
 
