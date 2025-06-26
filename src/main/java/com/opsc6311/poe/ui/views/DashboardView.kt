@@ -118,6 +118,9 @@ class DashboardView : AppCompatActivity(), View.OnClickListener {
                 }
                 updateBudgetUI(state.budget, state.statistics)
                 binds.swipeRefreshLayout.isRefreshing = false
+                
+                // Evaluate achievements when dashboard data is updated
+                achievementViewModel.evaluateAchievements()
             }
         }
     }

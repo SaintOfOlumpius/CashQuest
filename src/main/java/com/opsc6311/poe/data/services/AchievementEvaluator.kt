@@ -1,5 +1,6 @@
 package com.opsc6311.poe.data.services
 
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.opsc6311.poe.data.models.Achievement
@@ -18,6 +19,10 @@ class AchievementEvaluator(
     
     suspend fun evaluateUserAchievements() {
         val userId = auth.currentUser?.uid ?: return
+        
+        // Ensure user has all achievements initialized
+        val seedService = AchievementSeedService(db)
+        seedService.ensureUserAchievements(userId)
         
         // Get user's current achievements
         val userAchievements = getUserAchievements(userId)
@@ -84,31 +89,31 @@ class AchievementEvaluator(
         // Daily Tracker - Check for 7 consecutive days of expense logging
         if (!achievementIds.contains("daily_tracker")) {
             val consecutiveDays = getConsecutiveDaysWithExpenses(transactions)
-            updateAchievementProgress("daily_tracker", consecutiveDays)
+            updateAchievementProgress(userId, "daily_tracker", consecutiveDays)
         }
         
         // Weekly Warrior - Check for 4 weeks of app usage
         if (!achievementIds.contains("weekly_warrior")) {
             val weeklyUsage = getWeeklyUsageCount(transactions)
-            updateAchievementProgress("weekly_warrior", weeklyUsage)
+            updateAchievementProgress(userId, "weekly_warrior", weeklyUsage)
         }
         
         // Budget Streak - Check for 3 consecutive months with budgets
         if (!achievementIds.contains("budget_streak")) {
             val budgetMonths = getConsecutiveBudgetMonths(budgets)
-            updateAchievementProgress("budget_streak", budgetMonths)
+            updateAchievementProgress(userId, "budget_streak", budgetMonths)
         }
         
         // Habitual Saver - Check for 4 weeks of savings contributions
         if (!achievementIds.contains("habitual_saver")) {
             val savingsWeeks = getSavingsContributionWeeks(transactions)
-            updateAchievementProgress("habitual_saver", savingsWeeks)
+            updateAchievementProgress(userId, "habitual_saver", savingsWeeks)
         }
         
         // On-Time Logger - Check for 14 consecutive days of same-day logging
         if (!achievementIds.contains("on_time_logger")) {
             val onTimeDays = getOnTimeLoggingDays(transactions)
-            updateAchievementProgress("on_time_logger", onTimeDays)
+            updateAchievementProgress(userId, "on_time_logger", onTimeDays)
         }
     }
     
@@ -128,7 +133,7 @@ class AchievementEvaluator(
         // Savings Streak - Check for 3 months of consistent saving
         if (!achievementIds.contains("savings_streak")) {
             val savingsMonths = getSavingsStreakMonths(transactions)
-            updateAchievementProgress("savings_streak", savingsMonths)
+            updateAchievementProgress(userId, "savings_streak", savingsMonths)
         }
         
         // Emergency Fund Builder - Check for R5,000 in emergency fund
@@ -146,7 +151,7 @@ class AchievementEvaluator(
         // Savings Master - Check for 5 different savings goals reached
         if (!achievementIds.contains("savings_master")) {
             val reachedGoals = savingsGoals.count { it.savedAmount >= it.targetAmount }
-            updateAchievementProgress("savings_master", reachedGoals)
+            updateAchievementProgress(userId, "savings_master", reachedGoals)
         }
     }
     
@@ -174,13 +179,13 @@ class AchievementEvaluator(
         // Category Master - Check for 5 custom categories
         if (!achievementIds.contains("category_master")) {
             val customCategories = getCustomCategoriesCount(transactions)
-            updateAchievementProgress("category_master", customCategories)
+            updateAchievementProgress(userId, "category_master", customCategories)
         }
         
         // Spending Analyst - Check for 6 months of spending analysis
         if (!achievementIds.contains("spending_analyst")) {
             val analysisMonths = getSpendingAnalysisMonths(transactions)
-            updateAchievementProgress("spending_analyst", analysisMonths)
+            updateAchievementProgress(userId, "spending_analyst", analysisMonths)
         }
     }
     
@@ -201,25 +206,25 @@ class AchievementEvaluator(
         // Trends Analyst - Check for 3 months of trend viewing
         if (!achievementIds.contains("trends_analyst")) {
             val trendMonths = getTrendAnalysisMonths(transactions)
-            updateAchievementProgress("trends_analyst", trendMonths)
+            updateAchievementProgress(userId, "trends_analyst", trendMonths)
         }
         
         // Net Worth Tracker - Check for 6 months of net worth tracking
         if (!achievementIds.contains("net_worth_tracker")) {
             val trackingMonths = getNetWorthTrackingMonths(accounts)
-            updateAchievementProgress("net_worth_tracker", trackingMonths)
+            updateAchievementProgress(userId, "net_worth_tracker", trackingMonths)
         }
         
         // Cash Flow Master - Check for 3 months of positive cash flow
         if (!achievementIds.contains("cash_flow_master")) {
             val positiveFlowMonths = getPositiveCashFlowMonths(transactions)
-            updateAchievementProgress("cash_flow_master", positiveFlowMonths)
+            updateAchievementProgress(userId, "cash_flow_master", positiveFlowMonths)
         }
         
         // Financial Goals Setter - Check for 5 different financial goals
         if (!achievementIds.contains("financial_goals_setter")) {
             val goalCount = getFinancialGoalsCount(budgets, transactions)
-            updateAchievementProgress("financial_goals_setter", goalCount)
+            updateAchievementProgress(userId, "financial_goals_setter", goalCount)
         }
     }
     
@@ -235,13 +240,13 @@ class AchievementEvaluator(
         // Goal Setter - Check for 3 or more financial goals
         if (!achievementIds.contains("goal_setter")) {
             val totalGoals = budgets.size + savingsGoals.size
-            updateAchievementProgress("goal_setter", totalGoals)
+            updateAchievementProgress(userId, "goal_setter", totalGoals)
         }
         
         // Financially Fit - Check for 3 months of meeting budget goals
         if (!achievementIds.contains("financially_fit")) {
             val fitMonths = getFinanciallyFitMonths(budgets, transactions)
-            updateAchievementProgress("financially_fit", fitMonths)
+            updateAchievementProgress(userId, "financially_fit", fitMonths)
         }
         
         // App Explorer - Check if user has used all major features
@@ -597,26 +602,28 @@ class AchievementEvaluator(
                     .document(userId)
                     .collection("achievements")
                     .document(achievementId)
-                    .set(achievement)
+                    .set(achievement.copy(
+                        isCompleted = true,
+                        completedAt = Timestamp.now(),
+                        progress = achievement.requiredProgress
+                    ))
                     .await()
                 
                 // Add quest coins to user
                 addQuestCoins(userId, achievement.questCoinsReward)
             }
         } catch (e: Exception) {
-            // Handle error
+            println("Failed to unlock achievement: ${e.message}")
         }
     }
     
-    private suspend fun updateAchievementProgress(achievementId: String, progress: Int) {
-        val userId = auth.currentUser?.uid ?: return
-        
+    private suspend fun updateAchievementProgress(userId: String, achievementId: String, progress: Int) {
         try {
             // Get achievement details
             val achievementDoc = db.collection("achievements").document(achievementId).get().await()
             val achievement = achievementDoc.toObject(Achievement::class.java)
             
-            if (achievement != null && achievement.requiredProgress != null) {
+            if (achievement != null) {
                 val userAchievementDoc = db.collection("users")
                     .document(userId)
                     .collection("achievements")
@@ -628,7 +635,8 @@ class AchievementEvaluator(
                     // Create new user achievement with progress
                     val newUserAchievement = achievement.copy(
                         progress = progress,
-                        isCompleted = progress >= achievement.requiredProgress
+                        isCompleted = progress >= achievement.requiredProgress,
+                        completedAt = if (progress >= achievement.requiredProgress) Timestamp.now() else null
                     )
                     
                     userAchievementDoc.set(newUserAchievement).await()
@@ -645,7 +653,8 @@ class AchievementEvaluator(
                     userAchievementDoc.update(
                         mapOf(
                             "progress" to updatedProgress,
-                            "isCompleted" to isCompleted
+                            "isCompleted" to isCompleted,
+                            "completedAt" to if (isCompleted) Timestamp.now() else null
                         )
                     ).await()
                     
@@ -656,21 +665,30 @@ class AchievementEvaluator(
                 }
             }
         } catch (e: Exception) {
-            // Log error but don't throw to avoid breaking the evaluation process
             println("Failed to update achievement progress: ${e.message}")
         }
     }
     
     private suspend fun addQuestCoins(userId: String, amount: Int) {
         try {
-            val userDoc = db.collection("users").document(userId)
+            val questCoinsRef = db.collection("users")
+                .document(userId)
+                .collection("questCoins")
+                .document("balance")
+            
             db.runTransaction { transaction ->
-                val snapshot = transaction.get(userDoc)
-                val currentCoins = snapshot.getLong("questCoins") ?: 0
-                transaction.update(userDoc, "questCoins", currentCoins + amount)
+                val snapshot = transaction.get(questCoinsRef)
+                val currentBalance = snapshot.getLong("currentBalance") ?: 0
+                val totalEarned = snapshot.getLong("totalEarned") ?: 0
+                
+                transaction.update(questCoinsRef, mapOf(
+                    "currentBalance" to (currentBalance + amount),
+                    "totalEarned" to (totalEarned + amount),
+                    "lastUpdated" to Timestamp.now()
+                ))
             }.await()
         } catch (e: Exception) {
-            // Handle error
+            println("Failed to add quest coins: ${e.message}")
         }
     }
 }
