@@ -160,7 +160,7 @@ CashQuest features a comprehensive achievement system that motivates users throu
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/CashQuest.git
+   git clone https://github.com/SaintOfOlumpius/CashQuest.git
    cd CashQuest
    ```
 
@@ -255,9 +255,9 @@ This project is developed for educational purposes as part of the PROG7313 Mobil
 
 - **Developer**: Sthembiso Mcira
 - **Student Number**: ST10373737
-- **Email**: [Your Email]
-- **Course**: PROG7313 - Mobile Application Development
-- **Institution**: ADvTECH Ltd
+- **Email**: ST10373737@rccconnect.edu.za
+- **Course**: OPSC6311 - Open Source Coding
+- **Institution**: Rosebank College
 
 ---
 
