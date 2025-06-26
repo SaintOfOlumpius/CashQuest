@@ -20,8 +20,8 @@ CashQuest is a cutting-edge personal finance management application designed to 
 ### 🏆 **Developer Information**
 - **Developer:** Sthembiso Mcira
 - **Student Number:** ST10373737
-- **Course:** PROG7313 - Mobile Application Development
-- **Institution:** ADvTECH Ltd
+- **Course:** OPSC6311 - Open Source Coding
+- **Institution:** Rosebank College
 
 ---
 
