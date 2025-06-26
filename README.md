@@ -234,7 +234,7 @@ Built with the latest Android development practices and Firebase services, ensur
 
 ## 🤝 Contributing
 
-This is an academic project for PROG7313. For educational purposes, contributions and feedback are welcome.
+This is an academic project for OPSC6311. For educational purposes, contributions and feedback are welcome.
 
 ### **Development Guidelines**
 - Follow Kotlin coding conventions
@@ -247,7 +247,7 @@ This is an academic project for PROG7313. For educational purposes, contribution
 
 ## 📄 License
 
-This project is developed for educational purposes as part of the PROG7313 Mobile Application Development course at ADvTECH Ltd.
+This project is developed for educational purposes as part of the OPSC6311 Open source Coding course at Rosebank College.
 
 ---
 
