@@ -8,278 +8,347 @@
         tools:context=".ui.views.TransactionUpsertActivity"
         android:background="@color/background">
 
-    <!-- Appbar -->
-
+    <!-- Appbar with gradient background -->
     <com.google.android.material.appbar.AppBarLayout
-            android:background="@color/white"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/surface"
+            android:elevation="0dp"
             android:fitsSystemWindows="true">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
-                app:title="Create Transaction"
-                app:subtitle="Account"
-                android:theme="@style/ThemeOverlay.AppCompat.Light"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                tools:ignore="HardcodedText" />
+                android:background="@color/surface"
+                app:title="Create Transaction"
+                app:subtitle="Account"
+                app:titleTextColor="@color/text_primary"
+                app:subtitleTextColor="@color/text_secondary"
+                app:titleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                app:subtitleTextAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+                app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
+
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- UI -->
-
+    <!-- Main Content -->
     <androidx.core.widget.NestedScrollView
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_width="match_parent">
-
-        <!-- UI Contents -->
+            android:fillViewport="true"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/spacing_xlarge"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-                android:padding="@dimen/transaction_padding"
-                android:orientation="vertical"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent">
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_large">
 
-            <!-- INPUT: Description -->
-
-            <TextView
-                    android:text="Transaction details"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/transaction_title_size"
-                    android:textColor="@color/text_primary"
-                    android:layout_marginBottom="@dimen/spacing_medium"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    tools:ignore="HardcodedText" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_marginBottom="@dimen/spacing_large"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_description"
-                        android:hint="Transaction description or reference"
-                        android:inputType="text"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        tools:ignore="HardcodedText" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Horizontal Group -->
-
-            <LinearLayout
-                    android:baselineAligned="false"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent">
-
-                <!-- INPUT: Cost -->
-
-                <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="@dimen/spacing_small"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_marginBottom="@dimen/spacing_large"
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_cost"
-                                android:hint="Amount (ZAR)"
-                                android:inputType="numberDecimal"
-                                android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
-                                tools:ignore="HardcodedText" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-
-                <!-- INPUT: Date -->
-
-                <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_weight="1"
-                        android:layout_marginStart="@dimen/spacing_small"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_marginBottom="@dimen/spacing_large"
-                            android:layout_height="wrap_content"
-                            android:layout_width="match_parent">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/et_date"
-                                android:hint="Date"
-                                android:inputType="none"
-                                android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
-                                tools:ignore="HardcodedText" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- INPUT: Category -->
-
-            <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_marginBottom="@dimen/spacing_large"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent">
-
-                <AutoCompleteTextView
-                        android:id="@+id/op_category"
-                        android:hint="Select a category"
-                        android:inputType="none"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:importantForAccessibility="no"
-                        tools:ignore="HardcodedText" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- INPUT: Variants -->
-
-            <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_marginBottom="@dimen/spacing_large"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent">
-
-                <AutoCompleteTextView
-                        android:id="@+id/op_variants"
-                        android:hint="Select a source"
-                        android:inputType="none"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:importantForAccessibility="no"
-                        tools:ignore="HardcodedText" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Image Controls -->
-
-            <TextView
-                    android:text="Supporting image"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/transaction_title_size"
-                    android:textColor="@color/text_primary"
-                    android:layout_marginBottom="@dimen/spacing_medium"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    tools:ignore="HardcodedText" />
-
-            <TextView
-                    android:text="Jog your memory with a receipt or proof of payment"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                    android:textSize="@dimen/text_body_medium"
-                    android:textColor="@color/text_secondary"
-                    android:layout_marginBottom="@dimen/spacing_medium"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    tools:ignore="HardcodedText" />
-
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent">
-
-                <!-- CONTROL: Gallery -->
-
-                <com.google.android.material.button.MaterialButton
-                        android:id="@+id/bt_image_gallery"
-                        android:text="Use Gallery"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        app:icon="@drawable/ic_add_photo"
-                        android:layout_marginEnd="@dimen/spacing_small"
-                        android:layout_weight="1"
-                        android:layout_height="@dimen/button_height_small"
-                        android:layout_width="0dp"
-                        tools:ignore="HardcodedText" />
-
-                <!-- CONTROL: Capture -->
-
-                <com.google.android.material.button.MaterialButton
-                        android:id="@+id/bt_image_capture"
-                        android:text="Use Camera"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        app:icon="@drawable/ic_camera"
-                        android:layout_marginStart="@dimen/spacing_small"
-                        android:layout_weight="1"
-                        android:layout_height="@dimen/button_height_small"
-                        android:layout_width="0dp"
-                        tools:ignore="HardcodedText" />
-
-            </LinearLayout>
-
-            <!-- Image Recycler -->
-
+            <!-- Header Card -->
             <com.google.android.material.card.MaterialCardView
-                    app:cardCornerRadius="@dimen/transaction_card_corner_radius"
-                    app:strokeColor="@color/primary"
-                    app:strokeWidth="1dp"
-                    app:cardElevation="2dp"
-                    android:layout_marginTop="@dimen/spacing_medium"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                    style="@style/Widget.BudgetApp.TransactionCard"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_large">
 
-                    <ImageView
-                        android:id="@+id/iv_image"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:scaleType="centerCrop"
-                        android:background="@drawable/circle_background"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintDimensionRatio="1:1"
-                        android:importantForAccessibility="no" />
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_large">
 
-                    <ImageButton
-                        android:id="@+id/btn_remove_image"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:background="@drawable/circle_background"
-                        android:src="@drawable/ic_close"
-                        android:tint="@android:color/white"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_margin="@dimen/spacing_medium"
-                        android:contentDescription="Remove image" />
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Transaction Details"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                            android:textColor="@color/text_primary"
+                            android:textSize="@dimen/text_title_medium"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="@dimen/spacing_medium" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Enter the details of your transaction to keep track of your finances"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/text_body_medium" />
+
+                </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Controls -->
+            <!-- Transaction Form Card -->
+            <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BudgetApp.TransactionCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_large">
 
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_large">
+
+                    <!-- Description Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.BudgetApp.TransactionInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_large"
+                            android:hint="Transaction description"
+                            app:startIconDrawable="@drawable/ic_description">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_description"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:maxLines="3"
+                                android:textColor="@color/text_primary" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Amount and Date Row -->
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="@dimen/spacing_large">
+
+                        <!-- Amount Input -->
+                        <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.BudgetApp.TransactionInput"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="@dimen/spacing_small"
+                                android:hint="Amount (ZAR)"
+                                app:startIconDrawable="@drawable/ic_money">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_cost"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="numberDecimal"
+                                    android:textColor="@color/text_primary" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Date Input -->
+                        <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.BudgetApp.TransactionInput"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="@dimen/spacing_small"
+                                android:hint="Date"
+                                app:startIconDrawable="@drawable/ic_calendar">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/et_date"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="none"
+                                    android:focusable="false"
+                                    android:textColor="@color/text_primary" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <!-- Category Dropdown -->
+                    <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.BudgetApp.TextInputLayout.ExposedDropdownMenu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_large"
+                            android:hint="Select category"
+                            app:startIconDrawable="@drawable/ic_category"
+                            app:boxStrokeColor="@color/primary"
+                            app:hintTextColor="@color/primary">
+
+                            <AutoCompleteTextView
+                                    android:id="@+id/op_category"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="none"
+                                    android:textColor="@color/text_primary"
+                                    android:importantForAccessibility="no" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Transaction Type Dropdown -->
+                        <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.BudgetApp.TextInputLayout.ExposedDropdownMenu"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Transaction type"
+                                app:startIconDrawable="@drawable/ic_transactions"
+                                app:boxStrokeColor="@color/primary"
+                                app:hintTextColor="@color/primary">
+
+                            <AutoCompleteTextView
+                                    android:id="@+id/op_variants"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="none"
+                                    android:textColor="@color/text_primary"
+                                    android:importantForAccessibility="no" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Image Section Card -->
+            <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.BudgetApp.TransactionCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_large">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_large">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Supporting Image"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                            android:textColor="@color/text_primary"
+                            android:textSize="@dimen/text_title_medium"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="@dimen/spacing_small" />
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Add a receipt or proof of payment to help you remember this transaction"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="@dimen/text_body_medium"
+                            android:layout_marginBottom="@dimen/spacing_large" />
+
+                    <!-- Image Action Buttons -->
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="@dimen/spacing_medium">
+
+                        <com.google.android.material.button.MaterialButton
+                                android:id="@+id/bt_image_gallery"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="@dimen/spacing_small"
+                                android:text="Gallery"
+                                android:textSize="@dimen/text_body_medium"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                app:icon="@drawable/ic_add_photo"
+                                app:iconSize="@dimen/icon_size_medium"
+                                app:iconGravity="textStart"
+                                app:iconPadding="@dimen/spacing_small"
+                                app:cornerRadius="16dp"
+                                app:strokeColor="@color/primary"
+                                android:textColor="@color/primary" />
+
+                        <com.google.android.material.button.MaterialButton
+                                android:id="@+id/bt_image_capture"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginStart="@dimen/spacing_small"
+                                android:text="Camera"
+                                android:textSize="@dimen/text_body_medium"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                app:icon="@drawable/ic_camera"
+                                app:iconSize="@dimen/icon_size_medium"
+                                app:iconGravity="textStart"
+                                app:iconPadding="@dimen/spacing_small"
+                                app:cornerRadius="16dp"
+                                app:strokeColor="@color/primary"
+                                android:textColor="@color/primary" />
+
+                    </LinearLayout>
+
+                    <!-- Image Preview -->
+                    <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:cardCornerRadius="16dp"
+                            app:cardElevation="2dp"
+                            app:strokeColor="@color/premium_border"
+                            app:strokeWidth="1dp"
+                            android:visibility="gone"
+                            android:id="@+id/imagePreviewCard">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                            <ImageView
+                                    android:id="@+id/iv_image"
+                                    android:layout_width="0dp"
+                                    android:layout_height="0dp"
+                                    android:scaleType="centerCrop"
+                                    android:background="@drawable/circle_background"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintDimensionRatio="16:9"
+                                    android:importantForAccessibility="no" />
+
+                            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                                    android:id="@+id/btn_remove_image"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/spacing_medium"
+                                    android:src="@drawable/ic_close"
+                                    app:fabSize="mini"
+                                    app:backgroundTint="@color/red"
+                                    app:tint="@color/white"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    android:contentDescription="Remove image" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Save Button -->
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/bt_save"
-                    android:text="Save"
-                    style="@style/Widget.BudgetApp.Button"
-                    android:layout_marginTop="@dimen/spacing_large"
-                    android:layout_height="@dimen/button_height"
                     android:layout_width="match_parent"
-                    tools:ignore="HardcodedText" />
+                    android:layout_height="wrap_content"
+                    android:text="Save Transaction"
+                    android:textSize="@dimen/text_body_large"
+                    android:textStyle="bold"
+                    style="@style/Widget.BudgetApp.TransactionButton"
+                    app:icon="@drawable/ic_save"
+                    app:iconSize="@dimen/icon_size_medium"
+                    app:iconGravity="textStart"
+                    app:iconPadding="@dimen/spacing_medium"
+                    app:cornerRadius="24dp"
+                    android:padding="@dimen/spacing_large" />
 
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

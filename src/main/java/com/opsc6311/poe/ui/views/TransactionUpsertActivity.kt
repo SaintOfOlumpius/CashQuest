@@ -92,6 +92,8 @@ class TransactionUpsertActivity : AppCompatActivity(), View.OnClickListener,
     private fun observeViewModelState() = model.uiState.observe(this) { state ->
         when (state) {
             is TransactionUpsertUiState.Success -> {
+                binds.btSave.isEnabled = true
+                binds.btSave.text = "Save Transaction"
                 Toast.makeText(
                     this, state.message, Toast.LENGTH_SHORT
                 ).show()
@@ -100,10 +102,15 @@ class TransactionUpsertActivity : AppCompatActivity(), View.OnClickListener,
             }
 
             is TransactionUpsertUiState.Failure -> {
+                binds.btSave.isEnabled = true
+                binds.btSave.text = "Save Transaction"
                 Toast.makeText(this, state.message, Toast.LENGTH_LONG).show()
             }
 
-            TransactionUpsertUiState.Loading -> {}
+            TransactionUpsertUiState.Loading -> {
+                binds.btSave.isEnabled = false
+                binds.btSave.text = "Saving..."
+            }
         }
     }
 
@@ -130,6 +137,39 @@ class TransactionUpsertActivity : AppCompatActivity(), View.OnClickListener,
         val category = binds.opCategory.text.toString()
         val variants = binds.opVariants.text.toString()
 
+        // Enhanced validation
+        if (description.isBlank()) {
+            binds.etDescription.error = "Description is required"
+            return
+        }
+
+        if (amountStr.isBlank()) {
+            binds.etCost.error = "Amount is required"
+            return
+        }
+
+        if (dateText.isBlank()) {
+            binds.etDate.error = "Date is required"
+            return
+        }
+
+        if (category.isBlank()) {
+            binds.opCategory.error = "Category is required"
+            return
+        }
+
+        if (variants.isBlank()) {
+            binds.opVariants.error = "Transaction type is required"
+            return
+        }
+
+        // Clear any previous errors
+        binds.etDescription.error = null
+        binds.etCost.error = null
+        binds.etDate.error = null
+        binds.opCategory.error = null
+        binds.opVariants.error = null
+
         lifecycleScope.launch {
             model.saveTransaction(
                 amountStr = amountStr,
@@ -147,6 +187,9 @@ class TransactionUpsertActivity : AppCompatActivity(), View.OnClickListener,
         setPhotoPath(path)
         val uri = path.toUri()
         Glide.with(binds.ivImage.context).load(uri).centerCrop().into(binds.ivImage)
+        
+        // Show the image preview card
+        binds.imagePreviewCard.visibility = View.VISIBLE
     }
 
     private fun loadOptionsForCategoryDropdown(options: List<Category>) {
@@ -177,12 +220,17 @@ class TransactionUpsertActivity : AppCompatActivity(), View.OnClickListener,
 
     private fun showDateSelectorDialog() {
         val dialog = MaterialDatePicker.Builder.datePicker().apply {
-            setTitleText("When did the transaction happen?")
+            setTitleText("Select Transaction Date")
+            setSelection(System.currentTimeMillis())
         }.build()
 
         dialog.addOnPositiveButtonClickListener { date ->
             val formatted = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(Date(date))
             binds.etDate.setText(formatted)
+        }
+
+        dialog.addOnNegativeButtonClickListener {
+            // User cancelled, do nothing
         }
 
         dialog.show(
@@ -250,6 +298,7 @@ class TransactionUpsertActivity : AppCompatActivity(), View.OnClickListener,
             binds.btnRemoveImage.id -> {
                 selectedPhotoUri = null
                 binds.ivImage.setImageDrawable(null)
+                binds.imagePreviewCard.visibility = View.GONE
                 Toast.makeText(this, "Image removed", Toast.LENGTH_SHORT).show()
             }
         }
@@ -268,6 +317,7 @@ class TransactionUpsertActivity : AppCompatActivity(), View.OnClickListener,
         binds.btnRemoveImage.setOnClickListener {
             selectedPhotoUri = null
             binds.ivImage.setImageDrawable(null)
+            binds.imagePreviewCard.visibility = View.GONE
             Toast.makeText(this, "Image removed", Toast.LENGTH_SHORT).show()
         }
     }

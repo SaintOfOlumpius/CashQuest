@@ -100,4 +100,42 @@
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">sans-serif-medium</item>
     </style>
+
+    <!-- Transaction Form Card Style -->
+    <style name="Widget.BudgetApp.TransactionCard" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="cardElevation">4dp</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="contentPadding">0dp</item>
+        <item name="strokeColor">@color/premium_border</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="rippleColor">@color/ripple_light</item>
+    </style>
+
+    <!-- Transaction Input Style -->
+    <style name="Widget.BudgetApp.TransactionInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/primary</item>
+        <item name="hintTextColor">@color/primary</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="boxBackgroundColor">@color/surface</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="startIconTint">@color/primary</item>
+    </style>
+
+    <!-- Transaction Button Style -->
+    <style name="Widget.BudgetApp.TransactionButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/on_primary</item>
+        <item name="backgroundTint">@color/primary</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
