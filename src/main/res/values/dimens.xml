@@ -153,4 +153,30 @@
     
     <!-- Navigation Bar -->
     <dimen name="navigation_bar_height">48dp</dimen>
+    
+    <!-- Category specific dimensions -->
+    <dimen name="category_padding">16dp</dimen>
+    <dimen name="category_card_margin">8dp</dimen>
+    <dimen name="category_card_padding">20dp</dimen>
+    <dimen name="category_card_corner_radius">24dp</dimen>
+    <dimen name="category_icon_size">56dp</dimen>
+    <dimen name="category_status_indicator_width">4dp</dimen>
+    <dimen name="category_button_size">48dp</dimen>
+    <dimen name="category_button_padding">12dp</dimen>
+    <dimen name="category_type_chip_padding">12dp</dimen>
+    <dimen name="category_type_chip_corner_radius">16dp</dimen>
+    
+    <!-- Category text sizes -->
+    <dimen name="category_name_size">18sp</dimen>
+    <dimen name="category_type_size">12sp</dimen>
+    <dimen name="category_description_size">14sp</dimen>
+    <dimen name="category_budget_size">12sp</dimen>
+    
+    <!-- Category spacing -->
+    <dimen name="category_icon_margin">16dp</dimen>
+    <dimen name="category_content_margin">16dp</dimen>
+    <dimen name="category_type_margin">4dp</dimen>
+    <dimen name="category_description_margin">8dp</dimen>
+    <dimen name="category_budget_margin">12dp</dimen>
+    <dimen name="category_button_margin">8dp</dimen>
 </resources>

@@ -32,4 +32,17 @@
     
     <!-- Reduced bottom navigation padding -->
     <dimen name="bottom_nav_padding">90dp</dimen>
+    
+    <!-- Landscape optimizations -->
+    <dimen name="category_padding">20dp</dimen>
+    <dimen name="category_card_margin">10dp</dimen>
+    <dimen name="category_card_padding">24dp</dimen>
+    <dimen name="category_icon_size">52dp</dimen>
+    <dimen name="category_name_size">17sp</dimen>
+    <dimen name="category_description_size">13sp</dimen>
+    <dimen name="category_icon_margin">14dp</dimen>
+    <dimen name="category_content_margin">14dp</dimen>
+    <dimen name="category_button_size">46dp</dimen>
+    <dimen name="category_button_padding">11dp</dimen>
+    <dimen name="category_card_corner_radius">20dp</dimen>
 </resources>

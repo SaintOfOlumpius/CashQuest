@@ -62,6 +62,15 @@ class CategoryManagementActivity : AppCompatActivity(), View.OnClickListener {
     private fun observeViewModel() {
         model.categories.observe(this) { categories ->
             adapter.submitList(categories)
+            
+            // Handle empty state
+            if (categories.isEmpty()) {
+                binds.emptyState.visibility = View.VISIBLE
+                binds.recyclerView.visibility = View.GONE
+            } else {
+                binds.emptyState.visibility = View.GONE
+                binds.recyclerView.visibility = View.VISIBLE
+            }
         }
 
         model.error.observe(this) { error ->

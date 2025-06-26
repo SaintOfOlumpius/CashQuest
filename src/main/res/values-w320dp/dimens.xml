@@ -53,4 +53,16 @@
     <dimen name="transaction_date_size">11sp</dimen>
     <dimen name="transaction_summary_amount_size">16sp</dimen>
     <dimen name="transaction_summary_label_size">11sp</dimen>
+    
+    <!-- Small screen optimizations -->
+    <dimen name="category_padding">12dp</dimen>
+    <dimen name="category_card_margin">4dp</dimen>
+    <dimen name="category_card_padding">16dp</dimen>
+    <dimen name="category_icon_size">48dp</dimen>
+    <dimen name="category_name_size">16sp</dimen>
+    <dimen name="category_description_size">13sp</dimen>
+    <dimen name="category_icon_margin">12dp</dimen>
+    <dimen name="category_content_margin">12dp</dimen>
+    <dimen name="category_button_size">44dp</dimen>
+    <dimen name="category_button_padding">10dp</dimen>
 </resources> 

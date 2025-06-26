@@ -10,14 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="@dimen/dialog_padding">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/nameInput"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/spacing_medium"
             android:hint="Category Name">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -33,7 +33,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/spacing_medium"
             android:hint="Description">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -49,7 +49,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/spacing_medium"
             android:hint="Category Type">
 
             <AutoCompleteTextView
@@ -60,27 +60,12 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <com.google.android.material.textfield.TextInputLayout-->
-<!--            android:id="@+id/budgetLimitInput"-->
-<!--            style="@style/Widget.BudgetApp.TextInputLayout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginBottom="24dp"-->
-<!--            android:hint="Budget Limit">-->
-
-<!--            <com.google.android.material.textfield.TextInputEditText-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:inputType="numberDecimal" />-->
-
-<!--        </com.google.android.material.textfield.TextInputLayout>-->
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/minBudgetInput"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/spacing_medium"
             android:hint="Minimum Budget">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -94,7 +79,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="@dimen/spacing_large"
             android:hint="Maximum Budget">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -108,13 +93,17 @@
             android:layout_height="wrap_content"
             android:text="Icons and Colors"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            android:layout_marginBottom="16dp"/>
+            android:textSize="@dimen/text_title_medium"
+            android:layout_marginBottom="@dimen/spacing_medium"/>
+
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/iconChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:singleSelection="true">
+            android:layout_marginTop="@dimen/spacing_medium"
+            app:singleSelection="true"
+            app:chipSpacingHorizontal="@dimen/spacing_small"
+            app:chipSpacingVertical="@dimen/spacing_small">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/iconCategory"
@@ -122,7 +111,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Category"
-                app:chipIcon="@drawable/ic_category" />
+                android:textSize="@dimen/text_body_small"
+                app:chipIcon="@drawable/ic_category"
+                app:chipIconSize="@dimen/icon_size_medium" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/iconSavings"
@@ -130,7 +121,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Savings"
-                app:chipIcon="@drawable/ic_savings" />
+                android:textSize="@dimen/text_body_small"
+                app:chipIcon="@drawable/ic_savings"
+                app:chipIconSize="@dimen/icon_size_medium" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/iconUtilities"
@@ -138,7 +131,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Utilities"
-                app:chipIcon="@drawable/ic_utilities" />
+                android:textSize="@dimen/text_body_small"
+                app:chipIcon="@drawable/ic_utilities"
+                app:chipIconSize="@dimen/icon_size_medium" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/iconEmergency"
@@ -146,7 +141,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Emergency"
-                app:chipIcon="@drawable/ic_error" />
+                android:textSize="@dimen/text_body_small"
+                app:chipIcon="@drawable/ic_error"
+                app:chipIconSize="@dimen/icon_size_medium" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/iconIncome"
@@ -154,7 +151,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Income"
-                app:chipIcon="@drawable/ic_income" />
+                android:textSize="@dimen/text_body_small"
+                app:chipIcon="@drawable/ic_income"
+                app:chipIconSize="@dimen/icon_size_medium" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/iconExpense"
@@ -162,17 +161,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Expense"
-                app:chipIcon="@drawable/ic_expense" />
+                android:textSize="@dimen/text_body_small"
+                app:chipIcon="@drawable/ic_expense"
+                app:chipIconSize="@dimen/icon_size_medium" />
 
         </com.google.android.material.chip.ChipGroup>
-
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/colorChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:singleSelection="true">
+            android:layout_marginTop="@dimen/spacing_medium"
+            app:singleSelection="true"
+            app:chipSpacingHorizontal="@dimen/spacing_small"
+            app:chipSpacingVertical="@dimen/spacing_small">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/colorGreen"
@@ -180,6 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Green"
+                android:textSize="@dimen/text_body_small"
                 app:chipBackgroundColor="@color/green" />
 
             <com.google.android.material.chip.Chip
@@ -188,6 +191,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Blue"
+                android:textSize="@dimen/text_body_small"
                 app:chipBackgroundColor="@color/blue" />
 
             <com.google.android.material.chip.Chip
@@ -196,6 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Red"
+                android:textSize="@dimen/text_body_small"
                 app:chipBackgroundColor="@color/red" />
 
             <com.google.android.material.chip.Chip
@@ -204,6 +209,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Purple"
+                android:textSize="@dimen/text_body_small"
                 app:chipBackgroundColor="@color/purple" />
 
             <com.google.android.material.chip.Chip
@@ -212,6 +218,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Orange"
+                android:textSize="@dimen/text_body_small"
                 app:chipBackgroundColor="@color/orange" />
 
         </com.google.android.material.chip.ChipGroup>
@@ -220,8 +227,9 @@
             android:id="@+id/activeSwitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="@dimen/spacing_large"
             android:text="Active"
+            android:textSize="@dimen/text_body_medium"
             android:checked="true" />
 
         <LinearLayout
@@ -234,17 +242,19 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="@dimen/spacing_small"
                 android:layout_weight="1"
-                android:text="Cancel" />
+                android:text="Cancel"
+                android:textSize="@dimen/text_body_medium" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/saveButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/spacing_small"
                 android:layout_weight="1"
-                android:text="Save" />
+                android:text="Save"
+                android:textSize="@dimen/text_body_medium" />
 
         </LinearLayout>
 
