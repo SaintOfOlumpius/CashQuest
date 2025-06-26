@@ -4,172 +4,294 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".ui.views.AccountDetailsView">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:titleTextColor="@color/white" />
+            android:background="@color/primary"
+            app:titleTextColor="@color/white"
+            app:navigationIcon="@drawable/ic_back"
+            app:navigationIconTint="@color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/spacing_medium">
 
-            <!-- Account Name and Type -->
-            <LinearLayout
+            <!-- Account Header Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="16dp">
-
-                <ImageView
-                    android:id="@+id/accountIcon"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_account_balance" />
+                android:layout_marginBottom="@dimen/spacing_medium"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/surface"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/primary">
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="16dp">
-
-                    <TextView
-                        android:id="@+id/accountNameTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                        tools:text="Nedbank Gold" />
-
-                    <TextView
-                        android:id="@+id/accountTypeTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                        tools:text="Account type" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Line Graph -->
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/accountLineChart"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginBottom="16dp"/>
-
-            <!-- Time Period Chips -->
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/timePeriodChipGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:selectionRequired="true"
-                app:singleSelection="true">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip1Week"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1 week" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip1Month"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1 month" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip3Months"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="3 months" />
-
-            </com.google.android.material.chip.ChipGroup>
-
-            <!-- Account Balance -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp">
-
-                <TextView
-                    android:id="@+id/accountBalanceAmount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                    android:textStyle="bold"
-                    tools:text="R 23,309" />
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_medium">
 
+                    <!-- Account Name and Type -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/spacing_medium">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            app:cardCornerRadius="12dp"
+                            app:cardBackgroundColor="@color/primary"
+                            app:cardElevation="4dp">
+
+                            <ImageView
+                                android:id="@+id/accountIcon"
+                                android:layout_width="28dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_account_balance"
+                                app:tint="@color/white" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="@dimen/spacing_medium">
+
+                            <TextView
+                                android:id="@+id/accountNameTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_title_medium"
+                                android:textStyle="bold"
+                                android:textColor="@color/text_primary"
+                                android:fontFamily="sans-serif-medium"
+                                tools:text="Nedbank Gold" />
+
+                            <TextView
+                                android:id="@+id/accountTypeTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/text_body_medium"
+                                android:textColor="@color/text_secondary"
+                                android:layout_marginTop="2dp"
+                                android:fontFamily="sans-serif-light"
+                                tools:text="Checking Account" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Account Balance -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="12dp"
+                        app:cardBackgroundColor="@color/primary"
+                        app:cardElevation="4dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/spacing_medium"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Current Balance"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_body_medium"
+                                android:alpha="0.9"
+                                android:fontFamily="sans-serif-light" />
+
+                            <TextView
+                                android:id="@+id/accountBalanceAmount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="24sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="sans-serif-medium"
+                                tools:text="R 23,309" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Transactions Summary -->
+            <!-- Chart Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="2dp">
+                android:layout_marginBottom="@dimen/spacing_medium"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/surface"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/primary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_medium">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Balance History"
+                        android:textSize="@dimen/text_title_medium"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginBottom="@dimen/spacing_medium"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <!-- Line Graph -->
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/accountLineChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginBottom="@dimen/spacing_medium"/>
+
+                    <!-- Time Period Chips -->
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/timePeriodChipGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip1Week"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 week" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip1Month"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 month" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chip3Months"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3 months" />
+
+                    </com.google.android.material.chip.ChipGroup>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Transactions Summary Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_medium"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="8dp"
+                app:cardBackgroundColor="@color/surface"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/primary">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:padding="16dp">
+                    android:padding="@dimen/spacing_medium">
 
-                    <TextView
-                        android:id="@+id/transactionsSummaryTextView"
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                        tools:text="200 Transactions" />
+                        android:orientation="vertical">
 
-                    <Button
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Transactions"
+                            android:textSize="@dimen/text_body_medium"
+                            android:textColor="@color/text_secondary"
+                            android:fontFamily="sans-serif-light" />
+
+                        <TextView
+                            android:id="@+id/transactionsSummaryTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/text_title_medium"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_primary"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif-medium"
+                            tools:text="200 Transactions" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/viewTransactionsButton"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="View" />
+                        android:layout_height="@dimen/button_height_small"
+                        android:text="View All"
+                        android:textSize="@dimen/text_body_medium"
+                        app:cornerRadius="12dp"
+                        app:strokeColor="@color/primary"
+                        app:strokeWidth="1dp"
+                        android:textColor="@color/primary" />
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
             <!-- Delete Account Button -->
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/deleteAccountButton"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Delete this account"
-                android:textColor="@color/red" />
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height"
+                android:text="Delete Account"
+                android:textSize="@dimen/text_body_large"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/expense_red"
+                app:strokeWidth="1dp"
+                android:textColor="@color/expense_red"
+                android:fontFamily="sans-serif-medium" />
 
         </LinearLayout>
 
@@ -181,10 +303,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/white"
+        android:background="@color/surface"
         app:menu="@menu/bottom_navigation_menu"
         app:labelVisibilityMode="labeled"
         app:itemIconTint="@color/bottom_nav_icon_color"
-        app:itemTextColor="@color/bottom_nav_text_color" />
+        app:itemTextColor="@color/bottom_nav_text_color"
+        app:elevation="8dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout> 

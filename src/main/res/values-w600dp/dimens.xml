@@ -1,3 +1,56 @@
 <resources>
-      <dimen name="fab_margin">48dp</dimen>
-   </resources>
+    <!-- Tablet optimized dimensions -->
+    <dimen name="dashboard_padding">32dp</dimen>
+    <dimen name="dashboard_card_margin">32dp</dimen>
+    <dimen name="dashboard_card_padding">36dp</dimen>
+    <dimen name="dashboard_card_corner_radius">28dp</dimen>
+    
+    <!-- Larger text for tablets -->
+    <dimen name="text_title_large">32sp</dimen>
+    <dimen name="text_title_medium">24sp</dimen>
+    <dimen name="text_body_large">18sp</dimen>
+    <dimen name="text_body_medium">16sp</dimen>
+    <dimen name="text_body_small">14sp</dimen>
+    <dimen name="text_caption">15sp</dimen>
+    
+    <!-- Increased spacing for tablets -->
+    <dimen name="spacing_small">12dp</dimen>
+    <dimen name="spacing_medium">20dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="spacing_xlarge">40dp</dimen>
+    
+    <!-- Larger components for tablets -->
+    <dimen name="profile_image_size">64dp</dimen>
+    <dimen name="icon_size_large">56dp</dimen>
+    <dimen name="icon_size_medium">28dp</dimen>
+    <dimen name="button_height">56dp</dimen>
+    <dimen name="button_height_small">48dp</dimen>
+    
+    <!-- Adjusted ViewPager heights for tablets -->
+    <dimen name="viewpager_height">240dp</dimen>
+    <dimen name="cards_viewpager_height">600dp</dimen>
+    
+    <!-- Increased bottom navigation padding -->
+    <dimen name="bottom_nav_padding">140dp</dimen>
+    
+    <!-- Tablet-specific transaction dimensions -->
+    <dimen name="transaction_padding">32dp</dimen>
+    <dimen name="transaction_card_margin">24dp</dimen>
+    <dimen name="transaction_card_padding">28dp</dimen>
+    <dimen name="transaction_card_corner_radius">20dp</dimen>
+    <dimen name="transaction_item_margin">12dp</dimen>
+    <dimen name="transaction_item_padding">20dp</dimen>
+    <dimen name="transaction_icon_size">56dp</dimen>
+    <dimen name="transaction_icon_small">28dp</dimen>
+    <dimen name="transaction_button_spacing">12dp</dimen>
+    <dimen name="transaction_summary_card_height">100dp</dimen>
+    <dimen name="transaction_item_height">88dp</dimen>
+    
+    <!-- Tablet text sizes -->
+    <dimen name="transaction_title_size">20sp</dimen>
+    <dimen name="transaction_amount_size">18sp</dimen>
+    <dimen name="transaction_category_size">15sp</dimen>
+    <dimen name="transaction_date_size">14sp</dimen>
+    <dimen name="transaction_summary_amount_size">22sp</dimen>
+    <dimen name="transaction_summary_label_size">14sp</dimen>
+</resources>

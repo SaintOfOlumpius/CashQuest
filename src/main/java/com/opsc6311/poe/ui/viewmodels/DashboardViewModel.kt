@@ -404,4 +404,139 @@ class DashboardViewModel(
                 _uiState.value = Failure("Failed to delete account: ${exception.message}")
             }
     }
+
+    fun addAccount(account: Account) {
+        val userId = authService.getCurrentUser ()?.uid ?: return
+        val accountWithUserId = account.copy(userId = userId)
+        
+        FirestoreService.account.addAccount(accountWithUserId) { success ->
+            if (success) {
+                val currentAccounts = _accounts.value?.toMutableList() ?: mutableListOf()
+                currentAccounts.add(accountWithUserId)
+                _accounts.postValue(currentAccounts)
+                emitUpdatedState()
+            } else {
+                _uiState.value = Failure("Failed to add account")
+            }
+        }
+    }
+
+    fun transferBetweenAccounts(fromAccountId: String, toAccountId: String, amount: Double) {
+        viewModelScope.launch {
+            try {
+                val fromAccount = _accounts.value?.find { it.id == fromAccountId }
+                val toAccount = _accounts.value?.find { it.id == toAccountId }
+
+                if (fromAccount == null || toAccount == null) {
+                    _uiState.value = Failure("Invalid account selection")
+                    return@launch
+                }
+
+                if (fromAccount.balance < amount) {
+                    _uiState.value = Failure("Insufficient balance in source account")
+                    return@launch
+                }
+
+                // Create transfer transactions
+                val transferOutTransaction = Transaction(
+                    id = UUID.randomUUID().toString(),
+                    type = TransactionType.EXPENSE,
+                    amount = amount,
+                    description = "Transfer to ${toAccount.name}",
+                    date = com.google.firebase.Timestamp.now(),
+                    category = "Transfer",
+                    accountId = fromAccountId,
+                    userId = authService.getCurrentUser()?.uid ?: return@launch
+                )
+
+                val transferInTransaction = Transaction(
+                    id = UUID.randomUUID().toString(),
+                    type = TransactionType.INCOME,
+                    amount = amount,
+                    description = "Transfer from ${fromAccount.name}",
+                    date = com.google.firebase.Timestamp.now(),
+                    category = "Transfer",
+                    accountId = toAccountId,
+                    userId = authService.getCurrentUser()?.uid ?: return@launch
+                )
+
+                // Add both transactions
+                FirestoreService.transaction.addTransaction(transferOutTransaction) { success1 ->
+                    if (!success1) {
+                        _uiState.value = Failure("Failed to record transfer out transaction")
+                        return@addTransaction
+                    }
+
+                    FirestoreService.transaction.addTransaction(transferInTransaction) { success2 ->
+                        if (!success2) {
+                            _uiState.value = Failure("Failed to record transfer in transaction")
+                            return@addTransaction
+                        }
+
+                        // Update account balances
+                        val updatedFromAccount = fromAccount.copy(balance = fromAccount.balance - amount)
+                        val updatedToAccount = toAccount.copy(balance = toAccount.balance + amount)
+
+                        val currentAccounts = _accounts.value?.toMutableList() ?: mutableListOf()
+                        val fromIndex = currentAccounts.indexOfFirst { it.id == fromAccountId }
+                        val toIndex = currentAccounts.indexOfFirst { it.id == toAccountId }
+
+                        if (fromIndex != -1) currentAccounts[fromIndex] = updatedFromAccount
+                        if (toIndex != -1) currentAccounts[toIndex] = updatedToAccount
+
+                        _accounts.postValue(currentAccounts)
+                        emitUpdatedState()
+                    }
+                }
+            } catch (e: Exception) {
+                _uiState.value = Failure("Failed to transfer between accounts: ${e.message}")
+            }
+        }
+    }
+
+    fun contributeToSavings(amount: Double, onSuccess: (() -> Unit)? = null) {
+        viewModelScope.launch {
+            try {
+                val currentGoals = _savingsGoals.value
+                if (currentGoals.isNullOrEmpty()) {
+                    _uiState.value = Failure("No savings goals found")
+                    return@launch
+                }
+
+                val goal = currentGoals.first()
+                val newSavedAmount = goal.savedAmount + amount
+                
+                // Update the savings goal
+                val updatedGoal = goal.copy(savedAmount = newSavedAmount)
+                
+                val userId = authService.getCurrentUser()?.uid ?: return@launch
+                val db = FirebaseFirestore.getInstance()
+
+                db.collection("users").document(userId).collection("savings_goals")
+                    .document(goal.id)
+                    .set(updatedGoal)
+                    .addOnSuccessListener {
+                        // Update local state immediately
+                        val updatedGoals = currentGoals.map { 
+                            if (it.id == goal.id) updatedGoal else it 
+                        }
+                        _savingsGoals.postValue(updatedGoals)
+                        
+                        // Force a complete UI refresh
+                        emitUpdatedState()
+                        
+                        // Call success callback
+                        onSuccess?.invoke()
+                        
+                        // Also refresh all data to ensure consistency
+                        loadInitialData()
+                    }
+                    .addOnFailureListener { exception ->
+                        _uiState.value = Failure("Failed to contribute to savings: ${exception.message}")
+                    }
+            } catch (e: Exception) {
+                _uiState.value = Failure("Failed to contribute to savings: ${e.message}")
+            }
+        }
+    }
 }

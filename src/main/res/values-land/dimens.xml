@@ -1,3 +1,35 @@
 <resources>
-      <dimen name="fab_margin">48dp</dimen>
-   </resources>
+    <!-- Landscape optimized dimensions -->
+    <dimen name="dashboard_padding">20dp</dimen>
+    <dimen name="dashboard_card_margin">20dp</dimen>
+    <dimen name="dashboard_card_padding">24dp</dimen>
+    <dimen name="dashboard_card_corner_radius">20dp</dimen>
+    
+    <!-- Adjusted text sizes for landscape -->
+    <dimen name="text_title_large">26sp</dimen>
+    <dimen name="text_title_medium">18sp</dimen>
+    <dimen name="text_body_large">15sp</dimen>
+    <dimen name="text_body_medium">13sp</dimen>
+    <dimen name="text_body_small">11sp</dimen>
+    <dimen name="text_caption">12sp</dimen>
+    
+    <!-- Reduced spacing for landscape -->
+    <dimen name="spacing_small">6dp</dimen>
+    <dimen name="spacing_medium">12dp</dimen>
+    <dimen name="spacing_large">18dp</dimen>
+    <dimen name="spacing_xlarge">24dp</dimen>
+    
+    <!-- Smaller components for landscape -->
+    <dimen name="profile_image_size">48dp</dimen>
+    <dimen name="icon_size_large">40dp</dimen>
+    <dimen name="icon_size_medium">20dp</dimen>
+    <dimen name="button_height">44dp</dimen>
+    <dimen name="button_height_small">36dp</dimen>
+    
+    <!-- Adjusted ViewPager heights for landscape -->
+    <dimen name="viewpager_height">140dp</dimen>
+    <dimen name="cards_viewpager_height">350dp</dimen>
+    
+    <!-- Reduced bottom navigation padding -->
+    <dimen name="bottom_nav_padding">90dp</dimen>
+</resources>

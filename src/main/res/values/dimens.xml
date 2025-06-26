@@ -1,3 +1,156 @@
 <resources>
-      <dimen name="fab_margin">16dp</dimen>
-   </resources>
+    <!-- Base dimensions -->
+    <dimen name="fab_margin">16dp</dimen>
+    
+    <!-- Dashboard specific dimensions -->
+    <dimen name="dashboard_padding">24dp</dimen>
+    <dimen name="dashboard_card_margin">24dp</dimen>
+    <dimen name="dashboard_card_padding">28dp</dimen>
+    <dimen name="dashboard_card_corner_radius">24dp</dimen>
+    
+    <!-- Transaction specific dimensions -->
+    <dimen name="transaction_padding">20dp</dimen>
+    <dimen name="transaction_card_margin">16dp</dimen>
+    <dimen name="transaction_card_padding">20dp</dimen>
+    <dimen name="transaction_card_corner_radius">16dp</dimen>
+    <dimen name="transaction_item_margin">8dp</dimen>
+    <dimen name="transaction_item_padding">16dp</dimen>
+    <dimen name="transaction_icon_size">48dp</dimen>
+    <dimen name="transaction_icon_small">24dp</dimen>
+    <dimen name="transaction_button_spacing">8dp</dimen>
+    <dimen name="transaction_summary_card_height">80dp</dimen>
+    <dimen name="transaction_item_height">72dp</dimen>
+    
+    <!-- Text sizes -->
+    <dimen name="text_title_large">28sp</dimen>
+    <dimen name="text_title_medium">20sp</dimen>
+    <dimen name="text_body_large">16sp</dimen>
+    <dimen name="text_body_medium">14sp</dimen>
+    <dimen name="text_body_small">12sp</dimen>
+    <dimen name="text_caption">13sp</dimen>
+    
+    <!-- Transaction text sizes -->
+    <dimen name="transaction_title_size">18sp</dimen>
+    <dimen name="transaction_amount_size">16sp</dimen>
+    <dimen name="transaction_category_size">13sp</dimen>
+    <dimen name="transaction_date_size">12sp</dimen>
+    <dimen name="transaction_summary_amount_size">18sp</dimen>
+    <dimen name="transaction_summary_label_size">12sp</dimen>
+    
+    <!-- Spacing -->
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_xlarge">32dp</dimen>
+    
+    <!-- Component sizes -->
+    <dimen name="profile_image_size">56dp</dimen>
+    <dimen name="icon_size_large">48dp</dimen>
+    <dimen name="icon_size_medium">24dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_height_small">40dp</dimen>
+    
+    <!-- ViewPager heights -->
+    <dimen name="viewpager_height">200dp</dimen>
+    <dimen name="cards_viewpager_height">500dp</dimen>
+    
+    <!-- Bottom navigation padding -->
+    <dimen name="bottom_nav_padding">120dp</dimen>
+    
+    <!-- Achievement specific dimensions -->
+    <dimen name="achievement_padding">20dp</dimen>
+    <dimen name="achievement_card_margin">8dp</dimen>
+    <dimen name="achievement_card_padding">16dp</dimen>
+    <dimen name="achievement_card_corner_radius">12dp</dimen>
+    <dimen name="achievement_icon_size">48dp</dimen>
+    <dimen name="achievement_completion_icon_size">24dp</dimen>
+    <dimen name="achievement_progress_height">8dp</dimen>
+    <dimen name="achievement_category_badge_padding">8dp</dimen>
+    <dimen name="achievement_quest_coins_card_padding">24dp</dimen>
+    <dimen name="achievement_stats_card_padding">16dp</dimen>
+    <dimen name="achievement_search_margin">16dp</dimen>
+    <dimen name="achievement_tabs_padding">8dp</dimen>
+    
+    <!-- Achievement text sizes -->
+    <dimen name="achievement_title_size">16sp</dimen>
+    <dimen name="achievement_description_size">14sp</dimen>
+    <dimen name="achievement_category_size">12sp</dimen>
+    <dimen name="achievement_progress_size">12sp</dimen>
+    <dimen name="achievement_reward_size">14sp</dimen>
+    <dimen name="achievement_quest_coins_size">36sp</dimen>
+    <dimen name="achievement_level_size">14sp</dimen>
+    <dimen name="achievement_stats_size">24sp</dimen>
+    <dimen name="achievement_stats_label_size">12sp</dimen>
+    
+    <!-- Card Dimensions -->
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_margin">8dp</dimen>
+    
+    <!-- Button Dimensions -->
+    <dimen name="button_corner_radius">8dp</dimen>
+    <dimen name="button_padding">12dp</dimen>
+    
+    <!-- Text Sizes -->
+    <dimen name="text_body">14sp</dimen>
+    <dimen name="text_title">16sp</dimen>
+    <dimen name="text_headline">20sp</dimen>
+    <dimen name="text_display">24sp</dimen>
+    
+    <!-- Progress Bar -->
+    <dimen name="progress_bar_height">8dp</dimen>
+    <dimen name="progress_bar_corner_radius">4dp</dimen>
+    
+    <!-- Badge Dimensions -->
+    <dimen name="badge_corner_radius">12dp</dimen>
+    <dimen name="badge_padding">8dp</dimen>
+    
+    <!-- Icon Dimensions -->
+    <dimen name="icon_size_small">16dp</dimen>
+    <dimen name="icon_size_xlarge">48dp</dimen>
+    
+    <!-- Toolbar -->
+    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="toolbar_padding">16dp</dimen>
+    
+    <!-- Navigation -->
+    <dimen name="bottom_navigation_height">56dp</dimen>
+    <dimen name="bottom_navigation_padding">8dp</dimen>
+    
+    <!-- FAB -->
+    <dimen name="fab_size">56dp</dimen>
+    
+    <!-- Dialog -->
+    <dimen name="dialog_corner_radius">16dp</dimen>
+    <dimen name="dialog_padding">24dp</dimen>
+    <dimen name="dialog_margin">32dp</dimen>
+    
+    <!-- List Item -->
+    <dimen name="list_item_height">72dp</dimen>
+    <dimen name="list_item_padding">16dp</dimen>
+    <dimen name="list_item_divider_height">1dp</dimen>
+    
+    <!-- Input Fields -->
+    <dimen name="input_field_height">56dp</dimen>
+    <dimen name="input_field_padding">16dp</dimen>
+    <dimen name="input_field_corner_radius">8dp</dimen>
+    
+    <!-- Chip -->
+    <dimen name="chip_height">32dp</dimen>
+    <dimen name="chip_padding">12dp</dimen>
+    <dimen name="chip_corner_radius">16dp</dimen>
+    
+    <!-- Avatar -->
+    <dimen name="avatar_size_small">32dp</dimen>
+    <dimen name="avatar_size_medium">48dp</dimen>
+    <dimen name="avatar_size_large">64dp</dimen>
+    <dimen name="avatar_size_xlarge">96dp</dimen>
+    
+    <!-- Status Bar -->
+    <dimen name="status_bar_height">24dp</dimen>
+    
+    <!-- Navigation Bar -->
+    <dimen name="navigation_bar_height">48dp</dimen>
+</resources>

@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_medium">
 
     <!-- Enhanced Savings Goals Header -->
     <LinearLayout
@@ -11,19 +12,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="24dp">
+        android:layout_marginBottom="@dimen/spacing_large">
 
         <com.google.android.material.card.MaterialCardView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            app:cardCornerRadius="16dp"
+            android:layout_width="@dimen/icon_size_large"
+            android:layout_height="@dimen/icon_size_large"
+            app:cardCornerRadius="12dp"
             app:cardBackgroundColor="@color/primary"
-            app:cardElevation="8dp"
+            app:cardElevation="6dp"
             android:background="@drawable/icon_glow_background">
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="@dimen/icon_size_medium"
+                android:layout_height="@dimen/icon_size_medium"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_savings"
                 app:tint="@color/white" />
@@ -34,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_marginStart="20dp">
+            android:layout_marginStart="@dimen/spacing_medium">
 
             <TextView
                 android:id="@+id/savingsGoalTitle"
@@ -42,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:text="Savings Goals"
                 android:textColor="@color/text_primary"
-                android:textSize="22sp"
+                android:textSize="@dimen/text_title_medium"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-medium"
                 android:letterSpacing="0.02" />
@@ -53,8 +54,8 @@
                 android:layout_height="wrap_content"
                 android:text="Track your progress"
                 android:textColor="@color/text_secondary"
-                android:textSize="15sp"
-                android:layout_marginTop="4dp"
+                android:textSize="@dimen/text_body_medium"
+                android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif-light" />
         </LinearLayout>
 
@@ -65,9 +66,9 @@
             android:layout_height="wrap_content"
             android:text="Manage"
             android:textColor="@color/primary"
-            android:textSize="15sp"
-            android:minHeight="40dp"
-            android:paddingHorizontal="16dp"
+            android:textSize="@dimen/text_body_medium"
+            android:minHeight="36dp"
+            android:paddingHorizontal="@dimen/spacing_medium"
             android:fontFamily="sans-serif-medium" />
     </LinearLayout>
 
@@ -75,27 +76,27 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        app:cardCornerRadius="20dp"
-        app:cardBackgroundColor="@drawable/savings_gradient_background"
-        app:cardElevation="12dp"
-        app:strokeWidth="2dp"
+        android:layout_marginBottom="@dimen/spacing_medium"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="@color/primary"
+        app:cardElevation="8dp"
+        app:strokeWidth="1dp"
         app:strokeColor="@color/primary">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="20dp">
 
             <TextView
                 android:id="@+id/savingsGoalDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:textSize="13sp"
+                android:textSize="@dimen/text_body_small"
                 android:alpha="0.9"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/spacing_medium"
                 android:fontFamily="sans-serif-light" />
 
             <!-- Sophisticated Progress Bar -->
@@ -103,14 +104,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="@dimen/spacing_medium">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
+                    android:layout_marginBottom="@dimen/spacing_small">
 
                     <TextView
                         android:layout_width="0dp"
@@ -118,7 +119,7 @@
                         android:layout_weight="1"
                         android:text="Progress"
                         android:textColor="@color/white"
-                        android:textSize="15sp"
+                        android:textSize="@dimen/text_body_large"
                         android:alpha="0.9"
                         android:fontFamily="sans-serif-light" />
 
@@ -128,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:text="0%"
                         android:textColor="@color/white"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         android:fontFamily="sans-serif-medium" />
                 </LinearLayout>
@@ -137,26 +138,27 @@
                     android:id="@+id/savingsProgressBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:trackThickness="16dp"
+                    app:trackThickness="12dp"
                     app:trackColor="@color/progress_track_light"
                     app:indicatorColor="@color/progress_indicator_bright"
-                    app:trackCornerRadius="16dp" />
+                    app:trackCornerRadius="12dp" />
             </LinearLayout>
 
             <!-- Enhanced Savings Stats -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/spacing_medium">
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="12dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="8dp"
-                    app:cardBackgroundColor="@drawable/savings_stat_gradient"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@color/primary_dark"
                     app:strokeWidth="1dp"
                     app:strokeColor="@color/primary">
 
@@ -164,7 +166,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="20dp"
+                        android:padding="@dimen/spacing_medium"
                         android:gravity="center">
 
                         <TextView
@@ -172,7 +174,7 @@
                             android:layout_height="wrap_content"
                             android:text="Current"
                             android:textColor="@color/white"
-                            android:textSize="13sp"
+                            android:textSize="@dimen/text_body_small"
                             android:alpha="0.9"
                             android:fontFamily="sans-serif-light" />
 
@@ -182,9 +184,9 @@
                             android:layout_height="wrap_content"
                             android:text="R0"
                             android:textColor="@color/white"
-                            android:textSize="20sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
-                            android:layout_marginTop="6dp"
+                            android:layout_marginTop="4dp"
                             android:fontFamily="sans-serif-medium" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -193,10 +195,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="12dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="8dp"
-                    app:cardBackgroundColor="@drawable/savings_target_gradient"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@color/teal_200"
                     app:strokeWidth="1dp"
                     app:strokeColor="@color/primary">
 
@@ -204,7 +206,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="20dp"
+                        android:padding="@dimen/spacing_medium"
                         android:gravity="center">
 
                         <TextView
@@ -212,7 +214,7 @@
                             android:layout_height="wrap_content"
                             android:text="Target"
                             android:textColor="@color/white"
-                            android:textSize="13sp"
+                            android:textSize="@dimen/text_body_small"
                             android:alpha="0.9"
                             android:fontFamily="sans-serif-light" />
 
@@ -222,9 +224,9 @@
                             android:layout_height="wrap_content"
                             android:text="R0"
                             android:textColor="@color/white"
-                            android:textSize="20sp"
+                            android:textSize="16sp"
                             android:textStyle="bold"
-                            android:layout_marginTop="6dp"
+                            android:layout_marginTop="4dp"
                             android:fontFamily="sans-serif-medium" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -236,14 +238,14 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/contributeButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/button_height"
         android:text="Contribute to Savings"
-        android:textSize="16sp"
-        android:padding="18dp"
+        android:textSize="@dimen/text_body_large"
+        android:layout_marginTop="@dimen/spacing_small"
         app:backgroundTint="@color/primary"
         android:textColor="@color/white"
-        app:cornerRadius="16dp"
-        app:elevation="8dp"
+        app:cornerRadius="12dp"
+        app:elevation="6dp"
         android:fontFamily="sans-serif-medium" />
 
 </LinearLayout> 

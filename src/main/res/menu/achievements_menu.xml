@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_seed_achievements"
+        android:title="Seed Achievements"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_evaluate_achievements"
+        android:title="Evaluate Achievements"
+        android:icon="@drawable/ic_check"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_filter_all"
+        android:title="All"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_filter_milestones"
+        android:title="Milestones"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_filter_consistency"
+        android:title="Consistency"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_filter_savings"
+        android:title="Savings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_filter_budget"
+        android:title="Budget"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_filter_insight"
+        android:title="Insight"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_filter_learning"
+        android:title="Learning"
+        app:showAsAction="never" />
+
+</menu> 

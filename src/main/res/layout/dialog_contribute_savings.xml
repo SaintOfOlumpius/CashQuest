@@ -7,28 +7,41 @@
     android:padding="24dp">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Contribute to Savings"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        android:layout_marginBottom="16dp"/>
+        android:text="How much would you like to contribute to your savings goal?"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif-light" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/amountLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/amountInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Amount (ZAR)"
-        app:startIconDrawable="@drawable/ic_savings"
-        app:startIconTint="@color/primary">
+        android:hint="Amount"
+        app:prefixText="R"
+        app:startIconDrawable="@drawable/ic_money"
+        app:startIconTint="@color/primary"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/amountInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/maxAmountText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Maximum contribution: R0"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-light" />
 
     <LinearLayout
         android:layout_width="match_parent"

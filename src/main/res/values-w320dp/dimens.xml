@@ -1,0 +1,56 @@
+<resources>
+    <!-- Small screen optimized dimensions -->
+    <dimen name="dashboard_padding">16dp</dimen>
+    <dimen name="dashboard_card_margin">16dp</dimen>
+    <dimen name="dashboard_card_padding">20dp</dimen>
+    <dimen name="dashboard_card_corner_radius">20dp</dimen>
+    
+    <!-- Smaller text for small screens -->
+    <dimen name="text_title_large">24sp</dimen>
+    <dimen name="text_title_medium">18sp</dimen>
+    <dimen name="text_body_large">14sp</dimen>
+    <dimen name="text_body_medium">12sp</dimen>
+    <dimen name="text_body_small">10sp</dimen>
+    <dimen name="text_caption">11sp</dimen>
+    
+    <!-- Reduced spacing for small screens -->
+    <dimen name="spacing_small">6dp</dimen>
+    <dimen name="spacing_medium">12dp</dimen>
+    <dimen name="spacing_large">18dp</dimen>
+    <dimen name="spacing_xlarge">24dp</dimen>
+    
+    <!-- Smaller components for small screens -->
+    <dimen name="profile_image_size">48dp</dimen>
+    <dimen name="icon_size_large">40dp</dimen>
+    <dimen name="icon_size_medium">20dp</dimen>
+    <dimen name="button_height">44dp</dimen>
+    <dimen name="button_height_small">36dp</dimen>
+    
+    <!-- Adjusted ViewPager heights for small screens -->
+    <dimen name="viewpager_height">160dp</dimen>
+    <dimen name="cards_viewpager_height">400dp</dimen>
+    
+    <!-- Reduced bottom navigation padding -->
+    <dimen name="bottom_nav_padding">100dp</dimen>
+    
+    <!-- Small screen transaction dimensions -->
+    <dimen name="transaction_padding">16dp</dimen>
+    <dimen name="transaction_card_margin">12dp</dimen>
+    <dimen name="transaction_card_padding">16dp</dimen>
+    <dimen name="transaction_card_corner_radius">12dp</dimen>
+    <dimen name="transaction_item_margin">6dp</dimen>
+    <dimen name="transaction_item_padding">12dp</dimen>
+    <dimen name="transaction_icon_size">40dp</dimen>
+    <dimen name="transaction_icon_small">20dp</dimen>
+    <dimen name="transaction_button_spacing">6dp</dimen>
+    <dimen name="transaction_summary_card_height">70dp</dimen>
+    <dimen name="transaction_item_height">64dp</dimen>
+    
+    <!-- Small screen text sizes -->
+    <dimen name="transaction_title_size">16sp</dimen>
+    <dimen name="transaction_amount_size">14sp</dimen>
+    <dimen name="transaction_category_size">12sp</dimen>
+    <dimen name="transaction_date_size">11sp</dimen>
+    <dimen name="transaction_summary_amount_size">16sp</dimen>
+    <dimen name="transaction_summary_label_size">11sp</dimen>
+</resources> 

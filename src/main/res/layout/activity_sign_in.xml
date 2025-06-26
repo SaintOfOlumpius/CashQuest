@@ -48,8 +48,7 @@
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:paddingTop="0dp"
-            android:paddingBottom="0dp"
-            android:minHeight="match_parent">
+            android:paddingBottom="0dp">
 
             <!-- Status Bar Spacer -->
             <View
@@ -184,7 +183,6 @@
                         app:boxBackgroundColor="@color/surface_variant"
                         app:startIconDrawable="@drawable/ic_person_24px"
                         app:startIconTint="@color/primary"
-                        app:startIconSize="24dp"
                         app:boxCornerRadiusTopStart="20dp"
                         app:boxCornerRadiusTopEnd="20dp"
                         app:boxCornerRadiusBottomStart="20dp"
@@ -217,10 +215,8 @@
                         app:boxBackgroundColor="@color/surface_variant"
                         app:startIconDrawable="@drawable/ic_lock_24px"
                         app:startIconTint="@color/primary"
-                        app:startIconSize="24dp"
                         app:endIconDrawable="@drawable/ic_visibility_24px"
                         app:endIconTint="@color/primary"
-                        app:endIconSize="24dp"
                         app:passwordToggleEnabled="true"
                         app:passwordToggleTint="@color/primary"
                         app:boxCornerRadiusTopStart="20dp"

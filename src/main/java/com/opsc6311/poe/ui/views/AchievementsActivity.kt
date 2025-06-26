@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -21,14 +22,25 @@ import com.opsc6311.poe.databinding.ActivityAchievementsBinding
 import com.opsc6311.poe.ui.adapters.AchievementAdapter
 import com.opsc6311.poe.ui.viewmodels.AchievementViewModel
 import com.opsc6311.poe.core.utils.CurrencyFormatter
+import com.opsc6311.poe.core.utils.SeedData
 import java.text.NumberFormat
 import java.util.Locale
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import android.widget.SearchView
+import android.widget.Toast
+import android.app.AlertDialog
+import androidx.core.content.ContextCompat
 
 class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binds: ActivityAchievementsBinding
     private lateinit var model: AchievementViewModel
     private lateinit var adapter: AchievementAdapter
+    private var currentFilter: AchievementCategory? = null
+    private var searchQuery: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +56,9 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         
         // Add entrance animation
         addEntranceAnimations()
+
+        // Auto-evaluate achievements on page load
+        autoEvaluateAchievements()
     }
 
     private fun addEntranceAnimations() {
@@ -81,8 +96,12 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun observeViewModel() {
         model.achievements.observe(this) { achievements ->
-            adapter.updateAchievements(achievements)
+            filterAchievements()
             updateStatsCards(achievements)
+        }
+
+        model.userAchievements.observe(this) { userAchievements ->
+            filterAchievements()
         }
 
         model.questCoins.observe(this) { questCoins ->
@@ -94,14 +113,26 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
                 Snackbar.make(binds.root, it, Snackbar.LENGTH_LONG).show()
             }
         }
+
+        // Observe newly completed achievements for celebrations
+        model.newAchievementUnlocked.observe(this) { achievement ->
+            achievement?.let {
+                showAchievementCelebration(it)
+            }
+        }
+
+        // Observe level up events
+        model.levelUp.observe(this) { level ->
+            if (level > 0) {
+                showLevelUpCelebration(level)
+            }
+        }
     }
 
     private fun updateQuestCoinsDisplay(questCoins: QuestCoins) {
         // Animate the currency value change
         val currentValue = binds.QuestCoinsValue.text.toString()
-        val newValue = CurrencyFormatter.format(
-            questCoins.availableBalance * QuestCoins.CONVERSION_RATE
-        )
+        val newValue = questCoins.availableBalance.toString()
         
         if (currentValue != newValue) {
             binds.QuestCoinsValue.animate()
@@ -228,11 +259,39 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showProgressTrackingDialog(achievement: Achievement) {
+        val currentProgress = achievement.progress
+        val maxProgress = achievement.requiredProgress
+
         MaterialAlertDialogBuilder(this).apply {
             setTitle("Track Progress")
-            setMessage("Would you like to manually update your progress for '${achievement.title}'?")
+            setMessage("Current Progress: $currentProgress/$maxProgress\n\nWould you like to update your progress for '${achievement.title}'?")
+            setPositiveButton("Update Progress") { _, _ ->
+                showProgressUpdateDialog(achievement)
+            }
+            setNegativeButton("Cancel", null)
+        }.show()
+    }
+
+    private fun showProgressUpdateDialog(achievement: Achievement) {
+        val currentProgress = achievement.progress
+        val maxProgress = achievement.requiredProgress
+
+        val input = android.widget.EditText(this).apply {
+            hint = "Enter new progress (0-$maxProgress)"
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+            setText(currentProgress.toString())
+        }
+
+        MaterialAlertDialogBuilder(this).apply {
+            setTitle("Update Progress")
+            setMessage("Enter your new progress for '${achievement.title}':")
+            setView(input)
             setPositiveButton("Update") { _, _ ->
-                Snackbar.make(binds.root, "Progress tracking feature coming soon!", Snackbar.LENGTH_LONG).show()
+                val newProgress = input.text.toString().toIntOrNull() ?: currentProgress
+                val clampedProgress = newProgress.coerceIn(0, maxProgress)
+                
+                model.updateAchievementProgress(achievement.id, clampedProgress)
+                Snackbar.make(binds.root, "Progress updated!", Snackbar.LENGTH_SHORT).show()
             }
             setNegativeButton("Cancel", null)
         }.show()
@@ -268,10 +327,92 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         }.show()
     }
 
+    private fun showAchievementCelebration(achievement: Achievement) {
+        val snackbar = Snackbar.make(
+            findViewById(android.R.id.content),
+            "🎉 Achievement Unlocked: ${achievement.title} (+${achievement.questCoinsReward} coins)",
+            Snackbar.LENGTH_LONG
+        )
+        
+        snackbar.setAction("View") {
+            // Scroll to the achievement in the list
+            val position = adapter.currentList.indexOfFirst { it.id == achievement.id }
+            if (position != -1) {
+                binds.achievementsRecyclerView.smoothScrollToPosition(position)
+            }
+        }
+        
+        snackbar.show()
+        
+        // Clear the notification
+        model.clearNewAchievementNotification()
+    }
+
+    private fun showLevelUpCelebration(level: Int) {
+        val snackbar = Snackbar.make(
+            findViewById(android.R.id.content),
+            "🎊 Level Up! You're now level $level!",
+            Snackbar.LENGTH_LONG
+        )
+        
+        snackbar.setBackgroundTint(ContextCompat.getColor(this, R.color.colorPrimary))
+        snackbar.show()
+        
+        // Clear the notification
+        model.clearLevelUpNotification()
+    }
+
+    private fun autoEvaluateAchievements() {
+        model.evaluateAchievements()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
+                true
+            }
+            R.id.action_filter_all -> {
+                currentFilter = null
+                filterAchievements()
+                true
+            }
+            R.id.action_filter_milestones -> {
+                currentFilter = AchievementCategory.USER_MILESTONES
+                filterAchievements()
+                true
+            }
+            R.id.action_filter_consistency -> {
+                currentFilter = AchievementCategory.CONSISTENCY_HABITS
+                filterAchievements()
+                true
+            }
+            R.id.action_filter_savings -> {
+                currentFilter = AchievementCategory.SAVINGS_ACHIEVEMENTS
+                filterAchievements()
+                true
+            }
+            R.id.action_filter_budget -> {
+                currentFilter = AchievementCategory.BUDGET_MANAGEMENT
+                filterAchievements()
+                true
+            }
+            R.id.action_filter_insight -> {
+                currentFilter = AchievementCategory.FINANCIAL_INSIGHT
+                filterAchievements()
+                true
+            }
+            R.id.action_filter_learning -> {
+                currentFilter = AchievementCategory.LEARNING_GROWTH
+                filterAchievements()
+                true
+            }
+            R.id.action_seed_achievements -> {
+                seedAchievements()
+                true
+            }
+            R.id.action_evaluate_achievements -> {
+                evaluateAchievements()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -292,12 +433,40 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         setSupportActionBar(binds.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "🏆 Achievements"
+        
+        // Add seed button for development
+        binds.toolbar.inflateMenu(R.menu.achievements_menu)
+        binds.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_seed_achievements -> {
+                    seedAchievements()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun seedAchievements() {
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                SeedData.seedAchievements()
+                Snackbar.make(binds.root, "Achievements seeded successfully!", Snackbar.LENGTH_LONG).show()
+            } catch (e: Exception) {
+                Snackbar.make(binds.root, "Failed to seed achievements: ${e.message}", Snackbar.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
-        adapter = AchievementAdapter(emptyList()) { achievement ->
-            showAchievementDetails(achievement)
-        }
+        adapter = AchievementAdapter(
+            onAchievementClick = { achievement ->
+                showAchievementDetails(achievement)
+            },
+            onRedeemClick = { achievement ->
+                redeemAchievement(achievement)
+            }
+        )
         binds.achievementsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@AchievementsActivity)
             adapter = this@AchievementsActivity.adapter
@@ -331,7 +500,8 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
                     6 -> AchievementCategory.LEARNING_GROWTH
                     else -> null
                 }
-                adapter.filterByCategory(category)
+                currentFilter = category
+                filterAchievements()
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 // No animation needed
@@ -390,5 +560,92 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         setupRecyclerView()
         setupTabLayout()
         setupQuestCoinsCard()
+        setupSwipeRefresh()
+        setupSearch()
+    }
+
+    private fun setupSwipeRefresh() {
+        binds.swipeRefreshLayout.setOnRefreshListener {
+            // Refresh achievements and quest coins
+            model.refresh()
+            
+            // Stop refreshing after a delay
+            binds.swipeRefreshLayout.postDelayed({
+                binds.swipeRefreshLayout.isRefreshing = false
+            }, 2000)
+        }
+    }
+
+    private fun setupSearch() {
+        binds.searchEditText.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                searchQuery = s?.toString() ?: ""
+                filterAchievements()
+            }
+        })
+    }
+
+    private fun filterAchievements() {
+        val allAchievements = model.achievements.value ?: emptyList()
+        val userAchievements = model.userAchievements.value ?: emptyList()
+        
+        var filteredAchievements = allAchievements
+        
+        // Apply category filter
+        currentFilter?.let { category ->
+            filteredAchievements = filteredAchievements.filter { it.category == category }
+        }
+        
+        // Apply search filter
+        if (searchQuery.isNotEmpty()) {
+            filteredAchievements = filteredAchievements.filter { achievement ->
+                achievement.title.contains(searchQuery, ignoreCase = true) ||
+                achievement.description.contains(searchQuery, ignoreCase = true) ||
+                achievement.category.name.contains(searchQuery, ignoreCase = true)
+            }
+        }
+        
+        // Merge with user progress
+        val userAchievementMap = userAchievements.associateBy { it.id }
+        val mergedAchievements = filteredAchievements.map { achievement ->
+            val userAchievement = userAchievementMap[achievement.id]
+            if (userAchievement != null) {
+                achievement.copy(
+                    progress = userAchievement.progress,
+                    isCompleted = userAchievement.isCompleted,
+                    completedAt = userAchievement.completedAt
+                )
+            } else {
+                achievement
+            }
+        }
+        
+        adapter.submitList(mergedAchievements)
+    }
+
+    private fun evaluateAchievements() {
+        model.evaluateAchievements()
+        Toast.makeText(this, "Evaluating achievements...", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun redeemAchievement(achievement: Achievement) {
+        if (!achievement.isCompleted) {
+            Toast.makeText(this, "Achievement not completed yet!", Toast.LENGTH_SHORT).show()
+            return
+        }
+        
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Redeem Achievement")
+            .setMessage("You've earned ${achievement.questCoinsReward} quest coins for completing '${achievement.title}'!")
+            .setPositiveButton("Claim") { _, _ ->
+                // Achievement is already redeemed when completed
+                Toast.makeText(this, "Achievement already claimed!", Toast.LENGTH_SHORT).show()
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+        
+        dialog.show()
     }
 }

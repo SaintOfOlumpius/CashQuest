@@ -9,36 +9,44 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add a new account to track your finances"
+        android:text="Transfer money between your accounts"
         android:textColor="@color/text_primary"
         android:textSize="16sp"
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif-light" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/nameInput"
+        android:id="@+id/fromAccountInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Account Name"
+        android:hint="From Account"
         app:startIconDrawable="@drawable/ic_accounts"
-        app:startIconTint="@color/primary"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:startIconTint="@color/expense_red"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1" />
+            android:inputType="none" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:layout_marginVertical="8dp"
+        android:src="@drawable/ic_back"
+        android:rotation="90"
+        app:tint="@color/primary" />
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/typeInput"
+        android:id="@+id/toAccountInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Account Type"
-        app:startIconDrawable="@drawable/ic_category"
-        app:startIconTint="@color/primary"
+        android:hint="To Account"
+        app:startIconDrawable="@drawable/ic_accounts"
+        app:startIconTint="@color/income_green"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
 
         <AutoCompleteTextView
@@ -49,10 +57,10 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/balanceInput"
+        android:id="@+id/amountInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Initial Balance"
+        android:hint="Amount"
         app:prefixText="R"
         app:startIconDrawable="@drawable/ic_money"
         app:startIconTint="@color/primary"

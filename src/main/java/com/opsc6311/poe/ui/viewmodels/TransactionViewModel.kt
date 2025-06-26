@@ -16,6 +16,7 @@ import com.opsc6311.poe.core.utils.CurrencyFormatter
 import com.opsc6311.poe.data.models.Account
 import com.opsc6311.poe.data.services.FirestoreService
 import com.opsc6311.poe.ui.viewmodels.AchievementViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 /**
  * Unified ViewModel for both income and expense transactions.
@@ -376,10 +377,12 @@ class TransactionViewModel(
         categories: List<com.opsc6311.poe.data.models.Category>
     ) {
         val evaluator = com.opsc6311.poe.data.services.AchievementEvaluator(
-            userId = userId,
-            achievementViewModel = achievementViewModel
+            db = firestore,
+            auth = FirebaseAuth.getInstance()
         )
-        evaluator.run(accounts, allTransactions, categories)  // allTransactions already cached
+        viewModelScope.launch {
+            evaluator.evaluateUserAchievements()
+        }
     }
 
 

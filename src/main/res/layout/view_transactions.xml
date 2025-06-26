@@ -12,23 +12,23 @@
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:clipToPadding="false"
-        android:paddingBottom="100dp">
+        android:paddingBottom="@dimen/bottom_nav_padding">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="@dimen/transaction_padding">
 
             <!-- Enhanced Action Buttons Card -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="12dp"
+                android:layout_marginBottom="@dimen/transaction_card_margin"
+                app:cardCornerRadius="@dimen/transaction_card_corner_radius"
+                app:cardElevation="8dp"
                 app:cardBackgroundColor="@color/surface"
-                app:strokeWidth="2dp"
+                app:strokeWidth="1dp"
                 app:strokeColor="@color/primary"
                 android:background="@drawable/budget_card_background">
 
@@ -36,7 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="24dp">
+                    android:padding="@dimen/transaction_card_padding">
 
                     <!-- Header -->
                     <LinearLayout
@@ -44,19 +44,19 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="20dp">
+                        android:layout_marginBottom="@dimen/spacing_medium">
 
                         <com.google.android.material.card.MaterialCardView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/transaction_icon_size"
+                            android:layout_height="@dimen/transaction_icon_size"
                             app:cardCornerRadius="12dp"
                             app:cardBackgroundColor="@color/primary"
-                            app:cardElevation="6dp"
+                            app:cardElevation="4dp"
                             android:background="@drawable/icon_glow_background">
 
                             <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="@dimen/transaction_icon_small"
+                                android:layout_height="@dimen/transaction_icon_small"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_filter"
                                 app:tint="@color/white" />
@@ -68,9 +68,9 @@
                             android:layout_weight="1"
                             android:text="Transaction Controls"
                             android:textColor="@color/text_primary"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/transaction_title_size"
                             android:textStyle="bold"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="@dimen/spacing_medium"
                             android:fontFamily="sans-serif-medium"
                             android:letterSpacing="0.02" />
                     </LinearLayout>
@@ -85,52 +85,55 @@
                             android:id="@+id/btnFilter"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/button_height_small"
                             android:layout_weight="1"
                             android:text="Filter"
                             android:textColor="@color/primary"
-                            android:textSize="14sp"
-                            android:padding="16dp"
-                            app:cornerRadius="12dp"
-                            app:strokeWidth="2dp"
+                            android:textSize="@dimen/text_body_medium"
+                            android:paddingHorizontal="@dimen/spacing_medium"
+                            app:cornerRadius="8dp"
+                            app:strokeWidth="1dp"
                             app:strokeColor="@color/primary"
                             app:icon="@drawable/ic_filter_list"
                             app:iconTint="@color/primary"
+                            app:iconSize="@dimen/transaction_icon_small"
                             android:fontFamily="sans-serif-medium" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnSort"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/button_height_small"
                             android:layout_weight="1"
-                            android:layout_marginStart="12dp"
+                            android:layout_marginStart="@dimen/transaction_button_spacing"
                             android:text="Sort"
                             android:textColor="@color/primary"
-                            android:textSize="14sp"
-                            android:padding="16dp"
-                            app:cornerRadius="12dp"
-                            app:strokeWidth="2dp"
+                            android:textSize="@dimen/text_body_medium"
+                            android:paddingHorizontal="@dimen/spacing_medium"
+                            app:cornerRadius="8dp"
+                            app:strokeWidth="1dp"
                             app:strokeColor="@color/primary"
                             app:icon="@drawable/ic_sort"
                             app:iconTint="@color/primary"
+                            app:iconSize="@dimen/transaction_icon_small"
                             android:fontFamily="sans-serif-medium" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnAddTransaction"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/button_height_small"
                             android:layout_weight="1"
-                            android:layout_marginStart="12dp"
+                            android:layout_marginStart="@dimen/transaction_button_spacing"
                             android:text="Add"
                             android:textColor="@color/white"
-                            android:textSize="14sp"
-                            android:padding="16dp"
+                            android:textSize="@dimen/text_body_medium"
+                            android:paddingHorizontal="@dimen/spacing_medium"
                             app:backgroundTint="@color/primary"
-                            app:cornerRadius="12dp"
-                            app:elevation="6dp"
+                            app:cornerRadius="8dp"
+                            app:elevation="4dp"
                             app:icon="@drawable/ic_add"
                             app:iconTint="@color/white"
+                            app:iconSize="@dimen/transaction_icon_small"
                             android:fontFamily="sans-serif-medium" />
                     </LinearLayout>
                 </LinearLayout>
@@ -140,11 +143,11 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="12dp"
+                android:layout_marginBottom="@dimen/transaction_card_margin"
+                app:cardCornerRadius="@dimen/transaction_card_corner_radius"
+                app:cardElevation="8dp"
                 app:cardBackgroundColor="@color/surface"
-                app:strokeWidth="2dp"
+                app:strokeWidth="1dp"
                 app:strokeColor="@color/primary"
                 android:background="@drawable/budget_card_background">
 
@@ -152,7 +155,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="24dp">
+                    android:padding="@dimen/transaction_card_padding">
 
                     <!-- Header -->
                     <LinearLayout
@@ -160,19 +163,19 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="20dp">
+                        android:layout_marginBottom="@dimen/spacing_medium">
 
                         <com.google.android.material.card.MaterialCardView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/transaction_icon_size"
+                            android:layout_height="@dimen/transaction_icon_size"
                             app:cardCornerRadius="12dp"
                             app:cardBackgroundColor="@color/primary"
-                            app:cardElevation="6dp"
+                            app:cardElevation="4dp"
                             android:background="@drawable/icon_glow_background">
 
                             <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="@dimen/transaction_icon_small"
+                                android:layout_height="@dimen/transaction_icon_small"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_money"
                                 app:tint="@color/white" />
@@ -184,9 +187,9 @@
                             android:layout_weight="1"
                             android:text="Financial Summary"
                             android:textColor="@color/text_primary"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/transaction_title_size"
                             android:textStyle="bold"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="@dimen/spacing_medium"
                             android:fontFamily="sans-serif-medium"
                             android:letterSpacing="0.02" />
                     </LinearLayout>
@@ -201,10 +204,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginEnd="12dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="8dp"
-                            app:cardBackgroundColor="@drawable/income_stat_gradient"
+                            android:layout_marginEnd="@dimen/spacing_small"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="4dp"
+                            app:cardBackgroundColor="@color/income_color"
                             app:strokeWidth="1dp"
                             app:strokeColor="@color/income_color">
 
@@ -212,7 +215,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:padding="20dp"
+                                android:padding="@dimen/spacing_medium"
                                 android:gravity="center">
 
                                 <TextView
@@ -220,7 +223,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Income"
                                     android:textColor="@color/white"
-                                    android:textSize="13sp"
+                                    android:textSize="@dimen/transaction_summary_label_size"
                                     android:alpha="0.9"
                                     android:fontFamily="sans-serif-light" />
 
@@ -230,9 +233,9 @@
                                     android:layout_height="wrap_content"
                                     android:text="R 0.00"
                                     android:textColor="@color/white"
-                                    android:textSize="20sp"
+                                    android:textSize="@dimen/transaction_summary_amount_size"
                                     android:textStyle="bold"
-                                    android:layout_marginTop="6dp"
+                                    android:layout_marginTop="@dimen/spacing_small"
                                     android:fontFamily="sans-serif-medium" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
@@ -241,10 +244,10 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginStart="12dp"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="8dp"
-                            app:cardBackgroundColor="@drawable/expense_stat_gradient"
+                            android:layout_marginStart="@dimen/spacing_small"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="4dp"
+                            app:cardBackgroundColor="@color/expense_color"
                             app:strokeWidth="1dp"
                             app:strokeColor="@color/expense_color">
 
@@ -252,7 +255,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:padding="20dp"
+                                android:padding="@dimen/spacing_medium"
                                 android:gravity="center">
 
                                 <TextView
@@ -260,7 +263,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Expenses"
                                     android:textColor="@color/white"
-                                    android:textSize="13sp"
+                                    android:textSize="@dimen/transaction_summary_label_size"
                                     android:alpha="0.9"
                                     android:fontFamily="sans-serif-light" />
 
@@ -270,9 +273,9 @@
                                     android:layout_height="wrap_content"
                                     android:text="R 0.00"
                                     android:textColor="@color/white"
-                                    android:textSize="20sp"
+                                    android:textSize="@dimen/transaction_summary_amount_size"
                                     android:textStyle="bold"
-                                    android:layout_marginTop="6dp"
+                                    android:layout_marginTop="@dimen/spacing_small"
                                     android:fontFamily="sans-serif-medium" />
                             </LinearLayout>
                         </com.google.android.material.card.MaterialCardView>
@@ -284,18 +287,17 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="12dp"
+                app:cardCornerRadius="@dimen/transaction_card_corner_radius"
+                app:cardElevation="8dp"
                 app:cardBackgroundColor="@color/surface"
-                app:strokeWidth="2dp"
-                app:strokeColor="@color/primary"
-                android:background="@drawable/cards_container_background">
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/primary">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="24dp">
+                    android:padding="@dimen/transaction_card_padding">
 
                     <!-- Header -->
                     <LinearLayout
@@ -303,19 +305,19 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="20dp">
+                        android:layout_marginBottom="@dimen/spacing_medium">
 
                         <com.google.android.material.card.MaterialCardView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
+                            android:layout_width="@dimen/transaction_icon_size"
+                            android:layout_height="@dimen/transaction_icon_size"
                             app:cardCornerRadius="12dp"
                             app:cardBackgroundColor="@color/primary"
-                            app:cardElevation="6dp"
+                            app:cardElevation="4dp"
                             android:background="@drawable/icon_glow_background">
 
                             <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="@dimen/transaction_icon_small"
+                                android:layout_height="@dimen/transaction_icon_small"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_receipt"
                                 app:tint="@color/white" />
@@ -327,9 +329,9 @@
                             android:layout_weight="1"
                             android:text="Transaction History"
                             android:textColor="@color/text_primary"
-                            android:textSize="20sp"
+                            android:textSize="@dimen/transaction_title_size"
                             android:textStyle="bold"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="@dimen/spacing_medium"
                             android:fontFamily="sans-serif-medium"
                             android:letterSpacing="0.02" />
                     </LinearLayout>

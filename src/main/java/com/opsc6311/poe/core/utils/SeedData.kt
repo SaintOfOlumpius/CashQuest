@@ -355,4 +355,9 @@ object SeedData {
 //        achievementBatch.commit()
 
     }
+
+    suspend fun seedAchievements() {
+        val achievementSeedService = com.opsc6311.poe.core.services.AchievementSeedService()
+        achievementSeedService.seedAchievements()
+    }
 }

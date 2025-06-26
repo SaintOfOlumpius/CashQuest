@@ -1,12 +1,11 @@
 package com.opsc6311.poe.data.models
 
 import java.util.Date
-import com.opsc6311.poe.data.models.TransactionType
 
 data class QuestCoinsTransaction(
     val userId: String = "",
     val amount: Int = 0,
-    val type: TransactionType = TransactionType.EARNED,
+    val type: String = "EARNED",
     val description: String = "",
     val timestamp: Date = Date()
 )

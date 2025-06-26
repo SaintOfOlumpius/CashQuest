@@ -34,6 +34,7 @@ class CardsPagerAdapter(
     private var savingsGoals: List<SavingsGoal> = emptyList()
     private var accounts: List<Account> = emptyList()
     private var accountAdapter: AccountAdapter? = null
+    private var onContributeToGoalClick: ((SavingsGoal) -> Unit)? = null
 
     fun updateSavingsGoals(goals: List<SavingsGoal>) {
         savingsGoals = goals
@@ -44,6 +45,10 @@ class CardsPagerAdapter(
         accounts = accountsList
         accountAdapter?.submitList(accountsList)
         notifyItemChanged(VIEW_TYPE_ACCOUNTS)
+    }
+
+    fun setOnContributeToGoalClickListener(listener: (SavingsGoal) -> Unit) {
+        onContributeToGoalClick = listener
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -103,7 +108,22 @@ class CardsPagerAdapter(
                     "Target: ${dateFormat.format(it)}"
                 } ?: ""
 
+                // Always show contribute button, but enable/disable based on goal status
+                binding.contributeButton.visibility = View.VISIBLE
                 binding.contributeButton.isEnabled = goal.savedAmount < goal.targetAmount
+                
+                if (goal.savedAmount >= goal.targetAmount) {
+                    binding.contributeButton.text = "Goal Completed! 🎉"
+                } else {
+                    binding.contributeButton.text = "Contribute to Savings"
+                }
+
+                // Set up contribute button click listener with the current goal
+                binding.contributeButton.setOnClickListener {
+                    if (binding.contributeButton.isEnabled) {
+                        onContributeToGoalClick?.invoke(goal)
+                    }
+                }
             } else {
                 binding.savingsGoalTitle.text = "Savings Goals"
                 binding.savingsGoalText.text = "No goals set"
@@ -112,7 +132,16 @@ class CardsPagerAdapter(
                 binding.savingsPercentageText.text = "0%"
                 binding.savingsProgressBar.progress = 0
                 binding.savingsGoalDate.text = ""
+                
+                // Show contribute button but disable it when no goals
+                binding.contributeButton.visibility = View.VISIBLE
                 binding.contributeButton.isEnabled = false
+                binding.contributeButton.text = "Create Goal First"
+
+                // Set up contribute button click listener for disabled state
+                binding.contributeButton.setOnClickListener {
+                    // Do nothing when disabled
+                }
             }
 
             setupClickListeners()
@@ -120,7 +149,6 @@ class CardsPagerAdapter(
 
         private fun setupClickListeners() {
             binding.manageGoalsButton.setOnClickListener { onManageGoalsClick() }
-            binding.contributeButton.setOnClickListener { onContributeClick() }
         }
     }
 
@@ -149,8 +177,28 @@ class CardsPagerAdapter(
                     
                     binding.dashboardAccountsRecyclerView.apply {
                         adapter = accountAdapter
-                        layoutManager = LinearLayoutManager(itemView.context)
-                        setHasFixedSize(true)
+                        layoutManager = LinearLayoutManager(itemView.context).apply {
+                            orientation = LinearLayoutManager.VERTICAL // Change to vertical scrolling
+                        }
+                        setHasFixedSize(false) // Allow dynamic sizing for better scrolling
+                        isNestedScrollingEnabled = true // Enable nested scrolling
+                        overScrollMode = RecyclerView.OVER_SCROLL_IF_CONTENT_SCROLLS // Allow over-scroll when needed
+                        
+                        // Add item decoration for spacing between items
+                        addItemDecoration(object : RecyclerView.ItemDecoration() {
+                            override fun getItemOffsets(
+                                outRect: android.graphics.Rect,
+                                view: View,
+                                parent: RecyclerView,
+                                state: RecyclerView.State
+                            ) {
+                                val position = parent.getChildAdapterPosition(view)
+                                if (position != RecyclerView.NO_POSITION) {
+                                    // Add spacing between items (vertical spacing for vertical layout)
+                                    outRect.bottom = itemView.context.resources.getDimensionPixelSize(R.dimen.spacing_medium)
+                                }
+                            }
+                        })
                     }
                 }
                 

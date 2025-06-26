@@ -23,6 +23,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.opsc6311.poe.R
 import com.opsc6311.poe.data.models.Account
@@ -106,42 +107,54 @@ class AccountsView : AppCompatActivity(), View.OnClickListener {
 
     private fun showAddAccountDialog() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_add_account, null)
-        val nameField = dialogView.findViewById<TextInputEditText>(R.id.accountNameEditText)
-        val typeField =
-            dialogView.findViewById<AutoCompleteTextView>(R.id.accountTypeAutoCompleteTextView)
-        val saveBtn = dialogView.findViewById<Button>(R.id.saveAccountButton)
+        val nameInput = dialogView.findViewById<TextInputLayout>(R.id.nameInput)
+        val typeInput = dialogView.findViewById<TextInputLayout>(R.id.typeInput)
+        val balanceInput = dialogView.findViewById<TextInputLayout>(R.id.balanceInput)
 
-        val types = listOf("Credit", "Debit", "Savings")
-        typeField.setAdapter(ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, types))
+        // Setup account type dropdown
+        val accountTypes = arrayOf("Checking", "Savings", "Credit Card", "Investment", "Cash")
+        val typeAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, accountTypes)
+        val typeDropdown = typeInput.editText as? AutoCompleteTextView
+        typeDropdown?.setAdapter(typeAdapter)
 
-        val dialog = AlertDialog.Builder(this).setView(dialogView).create()
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Add New Account")
+            .setView(dialogView)
+            .setPositiveButton("Add") { dialog, _ ->
+                val name = nameInput.editText?.text.toString().trim()
+                val type = typeDropdown?.text.toString().trim()
+                val balanceStr = balanceInput.editText?.text.toString().trim()
 
-        saveBtn.setOnClickListener {
-            val name = nameField.text.toString().trim()
-            val type = typeField.text.toString().trim()
-            if (name.isEmpty()) {
-                nameField.error = "Required"; return@setOnClickListener
+                if (name.isEmpty()) {
+                    nameInput.error = "Account name is required"
+                    return@setPositiveButton
+                }
+
+                if (type.isEmpty()) {
+                    typeInput.error = "Account type is required"
+                    return@setPositiveButton
+                }
+
+                val balance = balanceStr.toDoubleOrNull() ?: 0.0
+
+                // ⚡️ REAL USER ID
+                val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return@setPositiveButton run {
+                    Snackbar.make(binds.root, "Not signed in", Snackbar.LENGTH_SHORT).show()
+                }
+
+                val newAccount = Account(
+                    id = UUID.randomUUID().toString(),
+                    userId = uid,
+                    name = name,
+                    type = type,
+                    balance = balance,
+                    transactionsCount = 0
+                )
+                model.addAccount(newAccount)
+                dialog.dismiss()
             }
-            if (type.isEmpty() || type !in types) {
-                typeField.error = "Invalid"; return@setOnClickListener
-            }
-
-            // ⚡️ REAL USER ID
-            val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return@setOnClickListener run {
-                Snackbar.make(binds.root, "Not signed in", Snackbar.LENGTH_SHORT).show()
-            }
-
-            val newAccount = Account(
-                id = UUID.randomUUID().toString(),
-                userId = uid,
-                name = name,
-                type = type,
-                balance = 0.0,
-                transactionsCount = 0
-            )
-            model.addAccount(newAccount)
-            dialog.dismiss()
-        }
+            .setNegativeButton("Cancel", null)
+            .create()
 
         dialog.show()
     }
