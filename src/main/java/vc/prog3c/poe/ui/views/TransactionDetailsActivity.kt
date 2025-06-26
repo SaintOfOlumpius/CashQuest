@@ -10,9 +10,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import vc.prog3c.poe.R
+import com.opsc6311.poe.R
 import vc.prog3c.poe.data.models.Transaction
-import vc.prog3c.poe.databinding.ActivityTransactionDetailsBinding
+import com.opsc6311.poe.databinding.ActivityTransactionDetailsBinding
 import vc.prog3c.poe.ui.viewmodels.TransactionViewModel
 import java.text.NumberFormat
 import java.util.*

@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
-import vc.prog3c.poe.R
+import com.opsc6311.poe.R
 
 object Notifier {
 

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import vc.prog3c.poe.data.models.Account
-import vc.prog3c.poe.databinding.ItemAccountBinding
+import com.opsc6311.poe.databinding.ItemAccountBinding
 
 class AccountAdapter(
     private val onItemClick: (Account) -> Unit,

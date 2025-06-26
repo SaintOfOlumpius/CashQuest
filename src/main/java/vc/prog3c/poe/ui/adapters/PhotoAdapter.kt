@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import vc.prog3c.poe.databinding.ItemPhotoBinding
+import coil.load
+import com.opsc6311.poe.databinding.ItemPhotoBinding
 
 class PhotoAdapter(
     private val onPhotoClick: (Uri) -> Unit,
@@ -36,10 +36,7 @@ class PhotoAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(uri: Uri) {
-            Glide.with(binding.root)
-                .load(uri)
-                .centerCrop()
-                .into(binding.ivImage)
+            binding.ivImage.load(uri)
 
             binding.root.setOnClickListener { onPhotoClick(uri) }
             binding.removeButton.setOnClickListener { onRemoveClick?.invoke(uri) }

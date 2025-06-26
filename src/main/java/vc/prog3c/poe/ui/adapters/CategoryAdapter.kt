@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import vc.prog3c.poe.R
+import com.opsc6311.poe.R
 import vc.prog3c.poe.data.models.Category
 import vc.prog3c.poe.data.models.CategoryType
 import de.hdodenhof.circleimageview.CircleImageView

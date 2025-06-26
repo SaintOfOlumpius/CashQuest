@@ -16,7 +16,7 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.permissionx.guolindev.request.ExplainScope
 import com.permissionx.guolindev.request.ForwardScope
 import kotlinx.coroutines.launch
-import vc.prog3c.poe.R
+import com.opsc6311.poe.R
 import vc.prog3c.poe.core.coordinators.ConsentCoordinator
 import vc.prog3c.poe.core.models.ConsentBundle
 import vc.prog3c.poe.core.models.ConsentUiHost
@@ -24,7 +24,7 @@ import vc.prog3c.poe.core.models.ImageResult
 import vc.prog3c.poe.core.services.DeviceCaptureService
 import vc.prog3c.poe.core.services.DeviceGalleryService
 import vc.prog3c.poe.data.models.Category
-import vc.prog3c.poe.databinding.ActivityTransactionUpsertBinding
+import com.opsc6311.poe.databinding.ActivityTransactionUpsertBinding
 import vc.prog3c.poe.ui.viewmodels.TransactionUpsertUiState
 import vc.prog3c.poe.ui.viewmodels.TransactionUpsertViewModel
 import java.text.SimpleDateFormat

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import vc.prog3c.poe.databinding.ActivityGoalSettingBinding
+import com.opsc6311.poe.databinding.ActivityGoalSettingBinding
 import vc.prog3c.poe.ui.viewmodels.GoalViewModel
 
 class GoalSettingView : AppCompatActivity(), View.OnClickListener {

@@ -10,8 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
-import vc.prog3c.poe.R
-import vc.prog3c.poe.databinding.ActivityManageGoalsBinding
+import com.opsc6311.poe.R
+import com.opsc6311.poe.databinding.ActivityManageGoalsBinding
 import vc.prog3c.poe.ui.viewmodels.GoalViewModel
 
 class ManageGoalsActivity : AppCompatActivity(), View.OnClickListener {

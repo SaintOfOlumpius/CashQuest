@@ -28,13 +28,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import vc.prog3c.poe.R
+import com.opsc6311.poe.R
 import vc.prog3c.poe.core.services.AuthService
 import vc.prog3c.poe.core.utils.CurrencyFormatter
 import vc.prog3c.poe.data.models.Category
 import vc.prog3c.poe.data.models.Transaction
 import vc.prog3c.poe.data.models.TransactionType
-import vc.prog3c.poe.databinding.ActivityGraphBinding
+import com.opsc6311.poe.databinding.ActivityGraphBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale

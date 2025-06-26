@@ -13,11 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import vc.prog3c.poe.R
+import com.opsc6311.poe.R
 import vc.prog3c.poe.data.models.Achievement
 import vc.prog3c.poe.data.models.AchievementCategory
 import vc.prog3c.poe.data.models.QuestCoins
-import vc.prog3c.poe.databinding.ActivityAchievementsBinding
+import com.opsc6311.poe.databinding.ActivityAchievementsBinding
 import vc.prog3c.poe.ui.adapters.AchievementAdapter
 import vc.prog3c.poe.ui.viewmodels.AchievementViewModel
 import vc.prog3c.poe.core.utils.CurrencyFormatter
@@ -52,7 +52,7 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         binds.questCoinsCard.animate()
             .alpha(1f)
             .setDuration(600)
-            .setStartDelay(200)
+            .setStartDelay(200L)
             .start()
 
         // Simple fade-in animation for stats cards
@@ -66,7 +66,7 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
             card.animate()
                 .alpha(1f)
                 .setDuration(400)
-                .setStartDelay(400 + (index * 100))
+                .setStartDelay(400L + (index * 100L))
                 .start()
         }
 
@@ -75,7 +75,7 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         binds.achievementTabs.animate()
             .alpha(1f)
             .setDuration(500)
-            .setStartDelay(600)
+            .setStartDelay(600L)
             .start()
     }
 

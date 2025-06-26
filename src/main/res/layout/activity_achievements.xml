@@ -128,7 +128,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="8dp"
                             app:trackCornerRadius="4dp"
-                            app:indicatorCornerRadius="4dp"
                             app:trackColor="@color/progress_background"
                             app:indicatorColor="@color/primary"
                             app:trackThickness="8dp" />

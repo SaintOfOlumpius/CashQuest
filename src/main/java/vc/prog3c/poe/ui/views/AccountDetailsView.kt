@@ -18,10 +18,10 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import vc.prog3c.poe.R
+import com.opsc6311.poe.R
 import vc.prog3c.poe.data.models.Transaction
 import vc.prog3c.poe.data.models.TransactionType
-import vc.prog3c.poe.databinding.ActivityAccountDetailsBinding
+import com.opsc6311.poe.databinding.ActivityAccountDetailsBinding
 import vc.prog3c.poe.ui.viewmodels.AccountDetailsViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale

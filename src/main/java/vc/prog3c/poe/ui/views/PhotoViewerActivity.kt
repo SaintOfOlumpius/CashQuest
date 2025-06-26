@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import vc.prog3c.poe.databinding.ActivityPhotoViewerBinding
+import com.opsc6311.poe.databinding.ActivityPhotoViewerBinding
 
 class PhotoViewerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPhotoViewerBinding

@@ -8,7 +8,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import android.widget.TextView
-import vc.prog3c.poe.R
+import com.opsc6311.poe.R
 
 class DashboardActivity : AppCompatActivity() {
 

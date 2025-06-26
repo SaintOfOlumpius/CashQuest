@@ -16,8 +16,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import vc.prog3c.poe.R
-import vc.prog3c.poe.databinding.ActivityProfileBinding
+import com.opsc6311.poe.R
+import com.opsc6311.poe.databinding.ActivityProfileBinding
 import vc.prog3c.poe.ui.viewmodels.AuthViewModel
 import vc.prog3c.poe.data.repository.CategoryRepository
 import vc.prog3c.poe.data.repository.TransactionRepository

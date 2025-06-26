@@ -12,13 +12,13 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import vc.prog3c.poe.R
+import com.opsc6311.poe.databinding.ActivitySignInBinding
+import com.opsc6311.poe.R
 import vc.prog3c.poe.core.models.BiometricUiHost
 import vc.prog3c.poe.core.models.SignInCredentials
 import vc.prog3c.poe.core.usecases.BiometricTransactionUseCase
 import vc.prog3c.poe.core.utils.Blogger
 import vc.prog3c.poe.core.utils.Notifier
-import vc.prog3c.poe.databinding.ActivitySignInBinding
 import vc.prog3c.poe.ui.viewmodels.SignInUiState
 import vc.prog3c.poe.ui.viewmodels.SignInViewModel
 

@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import vc.prog3c.poe.core.models.SignUpCredentials
 import vc.prog3c.poe.core.utils.Blogger
-import vc.prog3c.poe.databinding.ActivitySignUpBinding
+import com.opsc6311.poe.databinding.ActivitySignUpBinding
 import vc.prog3c.poe.ui.viewmodels.SignUpUiState
 import vc.prog3c.poe.ui.viewmodels.SignUpViewModel
 

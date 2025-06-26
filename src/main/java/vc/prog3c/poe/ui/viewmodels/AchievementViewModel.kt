@@ -89,8 +89,8 @@ class AchievementViewModel(
                         title = doc.getString("title") ?: "",
                         description = doc.getString("description") ?: "",
                         category = AchievementCategory.valueOf(doc.getString("category") ?: "USER_MILESTONES"),
-                        boosterBucksReward = doc.getLong("boosterBucksReward")?.toInt() ?: 0,
-                        requiredProgress = doc.getLong("requiredProgress")?.toInt() ?: 1
+                        boosterBucksReward = doc.getLong("boosterBucksReward")?.let { if (it <= Int.MAX_VALUE) it.toInt() else 0 } ?: 0,
+                        requiredProgress = doc.getLong("requiredProgress")?.let { if (it <= Int.MAX_VALUE) it.toInt() else 1 } ?: 1
                     )
                 }
 
@@ -104,7 +104,7 @@ class AchievementViewModel(
                 val merged = definitions.map { definition ->
                     val progressDoc = userData[definition.id]
                     definition.copy(
-                        progress = progressDoc?.getLong("progress")?.toInt() ?: 0,
+                        progress = progressDoc?.getLong("progress")?.let { if (it <= Int.MAX_VALUE) it.toInt() else 0 } ?: 0,
                         isCompleted = progressDoc?.getBoolean("isCompleted") ?: false,
                         completedAt = progressDoc?.getTimestamp("completedAt")
                     )
@@ -130,9 +130,9 @@ class AchievementViewModel(
                 val questCoins = if (snapshot.exists()) {
                     QuestCoins(
                         userId = userId,
-                        totalEarned = (snapshot.getLong("totalEarned") ?: 0).toInt(),
-                        totalRedeemed = (snapshot.getLong("totalRedeemed") ?: 0).toInt(),
-                        currentBalance = (snapshot.getLong("currentBalance") ?: 0).toInt(),
+                        totalEarned = snapshot.getLong("totalEarned")?.let { if (it <= Int.MAX_VALUE) it.toInt() else 0 } ?: 0,
+                        totalRedeemed = snapshot.getLong("totalRedeemed")?.let { if (it <= Int.MAX_VALUE) it.toInt() else 0 } ?: 0,
+                        currentBalance = snapshot.getLong("currentBalance")?.let { if (it <= Int.MAX_VALUE) it.toInt() else 0 } ?: 0,
                         lastUpdated = snapshot.getTimestamp("lastUpdated")?.toDate() ?: Date()
                     )
                 } else {

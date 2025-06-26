@@ -7,8 +7,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import vc.prog3c.poe.R
-import vc.prog3c.poe.databinding.ActivityMainBinding
+import com.opsc6311.poe.R
+import com.opsc6311.poe.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 

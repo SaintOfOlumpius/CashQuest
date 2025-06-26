@@ -9,7 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import vc.prog3c.poe.core.utils.Blogger
-import vc.prog3c.poe.databinding.ActivityForgotPasswordBinding
+import com.opsc6311.poe.databinding.ActivityForgotPasswordBinding
 import vc.prog3c.poe.ui.viewmodels.ForgotPasswordUiState
 import vc.prog3c.poe.ui.viewmodels.ForgotPasswordViewModel
 

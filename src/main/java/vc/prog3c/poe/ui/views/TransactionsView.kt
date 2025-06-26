@@ -9,11 +9,11 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
-import vc.prog3c.poe.R
+import com.opsc6311.poe.R
 import vc.prog3c.poe.data.models.Transaction
 import vc.prog3c.poe.data.models.TransactionType
 import vc.prog3c.poe.data.models.SortOption
-import vc.prog3c.poe.databinding.ViewTransactionsBinding
+import com.opsc6311.poe.databinding.ViewTransactionsBinding
 import vc.prog3c.poe.ui.adapters.TransactionAdapter
 import vc.prog3c.poe.ui.viewmodels.AchievementViewModel
 import vc.prog3c.poe.ui.viewmodels.TransactionState

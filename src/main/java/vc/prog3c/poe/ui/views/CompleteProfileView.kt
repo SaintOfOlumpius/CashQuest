@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import vc.prog3c.poe.databinding.ActivityCompleteProfileBinding
+import com.opsc6311.poe.databinding.ActivityCompleteProfileBinding
 import vc.prog3c.poe.ui.viewmodels.AuthViewModel
 
 class CompleteProfileView : AppCompatActivity(), View.OnClickListener {

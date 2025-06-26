@@ -12,18 +12,26 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import vc.prog3c.poe.R
-import vc.prog3c.poe.core.utils.CurrencyFormatter
+import com.opsc6311.poe.R
 import vc.prog3c.poe.data.models.*
-import vc.prog3c.poe.databinding.ActivityDashboardBinding
+import com.opsc6311.poe.databinding.ActivityDashboardBinding
 import vc.prog3c.poe.ui.adapters.AccountAdapter
+import vc.prog3c.poe.ui.adapters.CategoryAdapter
+import vc.prog3c.poe.ui.adapters.TransactionAdapter
 import vc.prog3c.poe.ui.adapters.DashboardPagerAdapter
+import vc.prog3c.poe.ui.adapters.CardsPagerAdapter
 import vc.prog3c.poe.ui.viewmodels.AchievementViewModel
 import vc.prog3c.poe.ui.viewmodels.DashboardUiState
 import vc.prog3c.poe.ui.viewmodels.DashboardViewModel
+import vc.prog3c.poe.core.utils.CurrencyFormatter
 import java.util.*
 
 class DashboardView : AppCompatActivity(), View.OnClickListener {
@@ -31,7 +39,7 @@ class DashboardView : AppCompatActivity(), View.OnClickListener {
     private lateinit var binds: ActivityDashboardBinding
     lateinit var model: DashboardViewModel
     private lateinit var achievementViewModel: AchievementViewModel
-    private lateinit var dashboardAccountAdapter: AccountAdapter
+    private lateinit var cardsPagerAdapter: CardsPagerAdapter
 
     private val profilePictureReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -50,12 +58,12 @@ class DashboardView : AppCompatActivity(), View.OnClickListener {
         setupLayoutUi()
         setupClickListeners()
         setupViewPager()
+        setupCardsViewPager()
 
         model = ViewModelProvider(this)[DashboardViewModel::class.java]
         achievementViewModel = ViewModelProvider(this)[AchievementViewModel::class.java]
 
         setupBottomNavigation()
-        setupDashboardAccountsRecyclerView()
 
         observeViewModel()
         model.refreshData()
@@ -98,7 +106,13 @@ class DashboardView : AppCompatActivity(), View.OnClickListener {
                 Snackbar.make(binds.root, state.message, Snackbar.LENGTH_LONG).show()
             }
             is DashboardUiState.Updated -> {
-                state.savingsGoals?.let { updateSavingsGoalUI(it) }
+                state.savingsGoals?.let { 
+                    updateSavingsGoalUI(it)
+                    cardsPagerAdapter.updateSavingsGoals(it)
+                }
+                state.accounts?.let { accounts ->
+                    cardsPagerAdapter.updateAccounts(accounts)
+                }
                 updateBudgetUI(state.budget, state.statistics)
                 binds.swipeRefreshLayout.isRefreshing = false
             }
@@ -107,6 +121,94 @@ class DashboardView : AppCompatActivity(), View.OnClickListener {
 
     private fun setupViewPager() {
         binds.viewPager.adapter = DashboardPagerAdapter(this)
+    }
+
+    private fun setupCardsViewPager() {
+        cardsPagerAdapter = CardsPagerAdapter(
+            onSavingsGoalClick = { goal ->
+                // Handle savings goal click
+            },
+            onManageGoalsClick = {
+                startActivity(Intent(this, ManageGoalsActivity::class.java))
+            },
+            onContributeClick = {
+                // Handle contribute click
+                Toast.makeText(this, "Contribute to savings", Toast.LENGTH_SHORT).show()
+            },
+            onAccountClick = { account ->
+                try {
+                    val intent = Intent(this, AccountDetailsView::class.java)
+                    intent.putExtra("account_id", account.id)
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            },
+            onAddAccountClick = {
+                showAddAccountDialog()
+            },
+            onViewAllAccountsClick = {
+                startActivity(Intent(this, AccountsView::class.java))
+            },
+            onTransferClick = {
+                Toast.makeText(this, "Transfer between accounts", Toast.LENGTH_SHORT).show()
+            },
+            onAccountLongPress = { account ->
+                showDeleteAccountDialog(account)
+            }
+        )
+
+        binds.cardsViewPager.adapter = cardsPagerAdapter
+        binds.cardsViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+        // Setup tab indicators
+        setupTabIndicators()
+    }
+
+    private fun setupTabIndicators() {
+        binds.savingsTab.setOnClickListener {
+            binds.cardsViewPager.currentItem = 0
+            updateTabSelection(0)
+        }
+
+        binds.accountsTab.setOnClickListener {
+            binds.cardsViewPager.currentItem = 1
+            updateTabSelection(1)
+        }
+
+        binds.cardsViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                updateTabSelection(position)
+            }
+        })
+
+        // Set initial selection
+        updateTabSelection(0)
+    }
+
+    private fun updateTabSelection(position: Int) {
+        when (position) {
+            0 -> {
+                binds.savingsTab.apply {
+                    setTextColor(resources.getColor(R.color.primary, theme))
+                    setBackgroundResource(R.drawable.bg_category_type_chip)
+                }
+                binds.accountsTab.apply {
+                    setTextColor(resources.getColor(R.color.text_secondary, theme))
+                    setBackgroundResource(android.R.color.transparent)
+                }
+            }
+            1 -> {
+                binds.accountsTab.apply {
+                    setTextColor(resources.getColor(R.color.primary, theme))
+                    setBackgroundResource(R.drawable.bg_category_type_chip)
+                }
+                binds.savingsTab.apply {
+                    setTextColor(resources.getColor(R.color.text_secondary, theme))
+                    setBackgroundResource(android.R.color.transparent)
+                }
+            }
+        }
     }
 
     private fun setupBottomNavigation() {
@@ -131,57 +233,9 @@ class DashboardView : AppCompatActivity(), View.OnClickListener {
         binds.bottomNavigation.selectedItemId = R.id.nav_dashboard
     }
 
-    private fun setupDashboardAccountsRecyclerView() {
-        dashboardAccountAdapter = AccountAdapter(
-            onItemClick = { account ->
-                try {
-                    val intent = Intent(this, AccountDetailsView::class.java)
-                    intent.putExtra("account_id", account.id)
-                    startActivity(intent)
-                } catch (e: Exception) {
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-            },
-            onLongPress = { account ->
-                showDeleteAccountDialog(account)
-            }
-        )
-
-        binds.dashboardAccountsRecyclerView.apply {
-            adapter = dashboardAccountAdapter
-            layoutManager = LinearLayoutManager(this@DashboardView)
-            setHasFixedSize(true)
-        }
-    }
-
     private fun updateSavingsGoalUI(goals: List<SavingsGoal>) {
-        if (goals.isNotEmpty()) {
-            val goal = goals[0]
-            val progress = if (goal.targetAmount > 0) goal.savedAmount / goal.targetAmount else 0.0
-            val percent = (progress * 100).toInt().coerceIn(0, 100)
-
-            binds.savingsGoalTitle.text = "Savings Goal"
-            binds.savingsGoalText.text = "${goal.name}: ${CurrencyFormatter.format(goal.savedAmount)} / ${CurrencyFormatter.format(goal.targetAmount)}"
-            binds.currentSavingsText.text = CurrencyFormatter.format(goal.savedAmount)
-            binds.maxSavingsText.text = CurrencyFormatter.format(goal.targetAmount)
-            binds.savingsPercentageText.text = "$percent%"
-            binds.savingsProgressBar.progress = percent
-
-            binds.savingsGoalDate.text = goal.targetDate?.let {
-                val dateFormat = android.text.format.DateFormat.getMediumDateFormat(this)
-                "Target date: ${dateFormat.format(it)}"
-            } ?: ""
-
-            binds.contributeButton.isEnabled = goal.savedAmount < goal.targetAmount
-        } else {
-            binds.savingsGoalTitle.text = "Savings Goal"
-            binds.savingsGoalText.text = getString(R.string.no_savings_goals)
-            binds.currentSavingsText.text = CurrencyFormatter.format(0)
-            binds.maxSavingsText.text = CurrencyFormatter.format(0)
-            binds.savingsPercentageText.text = "0%"
-            binds.savingsProgressBar.progress = 0
-            binds.savingsGoalDate.text = ""
-        }
+        // This method is now handled by the CardsPagerAdapter
+        // Keeping it for backward compatibility
     }
 
     private fun updateBudgetUI(budget: Budget?, stats: MonthlyStats?) {
@@ -221,15 +275,16 @@ class DashboardView : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             binds.profileImage.id -> startActivity(Intent(this, ProfileActivity::class.java))
-            binds.manageGoalsButton.id -> startActivity(Intent(this, ManageGoalsActivity::class.java))
-            binds.addAccountButton.id -> showAddAccountDialog()
+            binds.fab.id -> {
+                // Handle FAB click for adding transactions
+                Toast.makeText(this, "Add transaction", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun setupClickListeners() {
         binds.profileImage.setOnClickListener(this)
-        binds.manageGoalsButton.setOnClickListener(this)
-        binds.addAccountButton.setOnClickListener(this)
+        binds.fab.setOnClickListener(this)
     }
 
     private fun setupBindings() {

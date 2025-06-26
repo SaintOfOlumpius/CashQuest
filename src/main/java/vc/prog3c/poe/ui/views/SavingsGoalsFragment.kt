@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import vc.prog3c.poe.databinding.FragmentSavingsGoalsBinding
+import com.opsc6311.poe.databinding.FragmentSavingsGoalsBinding
 import vc.prog3c.poe.ui.adapters.SavingsGoalAdapter
 import vc.prog3c.poe.ui.viewmodels.DashboardViewModel
 

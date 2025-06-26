@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import vc.prog3c.poe.data.models.SavingsGoal
-import vc.prog3c.poe.databinding.ItemSavingsGoalBinding
+import com.opsc6311.poe.databinding.ItemSavingsGoalBinding
 
 class SavingsGoalAdapter : ListAdapter<SavingsGoal, SavingsGoalAdapter.SavingsGoalViewHolder>(SavingsGoalDiffCallback()) {
 

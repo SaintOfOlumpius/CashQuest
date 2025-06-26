@@ -19,10 +19,10 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
 import android.app.AlertDialog
-import vc.prog3c.poe.R
+import com.opsc6311.poe.R
 import vc.prog3c.poe.data.models.Category
 import vc.prog3c.poe.data.models.CategoryType
-import vc.prog3c.poe.databinding.ActivityCategoryManagementBinding
+import com.opsc6311.poe.databinding.ActivityCategoryManagementBinding
 import vc.prog3c.poe.ui.adapters.CategoryAdapter
 import vc.prog3c.poe.ui.viewmodels.CategoryViewModel
 import java.util.UUID

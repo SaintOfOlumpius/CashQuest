@@ -56,7 +56,8 @@ class DashboardViewModel(
             breakdowns = _breakdowns,
             statistics = _statistics,
             savingsGoals = _savingsGoals.value, // Use LiveData value
-            budget = currentBudget
+            budget = currentBudget,
+            accounts = _accounts.value // Include accounts
         )
     }
 
