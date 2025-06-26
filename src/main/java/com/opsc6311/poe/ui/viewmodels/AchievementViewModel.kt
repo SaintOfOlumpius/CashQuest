@@ -13,6 +13,7 @@ import com.opsc6311.poe.core.services.AuthService
 import com.opsc6311.poe.core.utils.Event
 import com.opsc6311.poe.data.models.*
 import com.opsc6311.poe.data.services.AchievementEvaluator
+import com.opsc6311.poe.data.services.AchievementSeedService
 import java.util.Date
 
 class AchievementViewModel(
@@ -21,6 +22,7 @@ class AchievementViewModel(
 ) : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
     private val evaluator = AchievementEvaluator(db, auth)
+    private val seedService = AchievementSeedService(db)
 
     private val _achievements = MutableLiveData<List<Achievement>>()
     val achievements: LiveData<List<Achievement>> = _achievements
@@ -83,6 +85,7 @@ class AchievementViewModel(
 
         if (level > oldLevel) {
             _levelUpEvent.value = Event(level)
+            _levelUp.value = level
         }
     }
 
@@ -100,6 +103,9 @@ class AchievementViewModel(
             _error.value = null
             
             try {
+                // First, ensure achievements are seeded
+                seedService.seedAchievements()
+                
                 val snapshot = db.collection("achievements")
                     .whereEqualTo("isPublic", true)
                     .get()
@@ -136,13 +142,16 @@ class AchievementViewModel(
                         lastUpdated = snapshot.getTimestamp("lastUpdated")?.toDate() ?: Date()
                     )
                 } else {
-                    QuestCoins(
+                    // Initialize quest coins if they don't exist
+                    val initialQuestCoins = QuestCoins(
                         userId = userId,
                         totalEarned = 0,
                         totalRedeemed = 0,
                         currentBalance = 0,
                         lastUpdated = Date()
                     )
+                    questCoinsRef.set(initialQuestCoins).await()
+                    initialQuestCoins
                 }
 
                 _questCoins.value = questCoins
@@ -154,6 +163,48 @@ class AchievementViewModel(
             } catch (e: Exception) {
                 _error.value = "Failed to load Quest Coins: ${e.message}"
             }
+        }
+    }
+
+    private fun loadUserData() {
+        viewModelScope.launch {
+            try {
+                val userId = auth.currentUser?.uid ?: return@launch
+                
+                // Ensure user has all achievements initialized
+                seedService.ensureUserAchievements(userId)
+                
+                val snapshot = db.collection("users")
+                    .document(userId)
+                    .collection("achievements")
+                    .get()
+                    .await()
+                
+                val userAchievementList = snapshot.documents.mapNotNull { doc ->
+                    doc.toObject(Achievement::class.java)
+                }.sortedBy { it.category }
+                
+                _userAchievements.value = userAchievementList
+                
+                // Check for newly completed achievements
+                checkForNewlyCompletedAchievements(userAchievementList)
+                
+            } catch (e: Exception) {
+                _error.value = "Failed to load user data: ${e.message}"
+            }
+        }
+    }
+
+    private fun checkForNewlyCompletedAchievements(userAchievements: List<Achievement>) {
+        val newlyCompleted = userAchievements.filter { 
+            it.isCompleted && it.completedAt != null 
+        }.filter { achievement ->
+            val timeSinceCompletion = System.currentTimeMillis() - achievement.completedAt.toDate().time
+            timeSinceCompletion < 24 * 60 * 60 * 1000 // Within 24 hours
+        }
+        
+        if (newlyCompleted.isNotEmpty()) {
+            _newAchievementUnlocked.value = newlyCompleted.first()
         }
     }
 
@@ -199,15 +250,15 @@ class AchievementViewModel(
      * Also adds points to leveling system.
      */
     fun updateAchievementProgress(achievementId: String, progress: Int) {
-        val userId = auth.currentUser?.uid ?: return
-        
         viewModelScope.launch {
             try {
+                val userId = auth.currentUser?.uid ?: return@launch
+                
                 // Get achievement details
                 val achievementDoc = db.collection("achievements").document(achievementId).get().await()
                 val achievement = achievementDoc.toObject(Achievement::class.java)
                 
-                if (achievement != null && achievement.requiredProgress != null) {
+                if (achievement != null) {
                     val userAchievementDoc = db.collection("users")
                         .document(userId)
                         .collection("achievements")
@@ -219,213 +270,92 @@ class AchievementViewModel(
                         // Create new user achievement with progress
                         val newUserAchievement = achievement.copy(
                             progress = progress,
-                            isCompleted = progress >= achievement.requiredProgress
+                            isCompleted = progress >= achievement.requiredProgress,
+                            completedAt = if (progress >= achievement.requiredProgress) Timestamp.now() else null
                         )
                         
                         userAchievementDoc.set(newUserAchievement).await()
                         
                         // Check if completed
                         if (newUserAchievement.isCompleted) {
+                            awardQuestCoins(achievement.questCoinsReward)
+                            _newlyCompleted.value = Event(newUserAchievement)
                             addPoints(achievement.questCoinsReward)
-                            _newAchievementUnlocked.value = newUserAchievement
                         }
                     } else if (!userAchievement.isCompleted) {
                         // Update existing progress
                         val updatedProgress = progress.coerceAtMost(achievement.requiredProgress)
                         val isCompleted = updatedProgress >= achievement.requiredProgress
                         
-                        userAchievementDoc.update(
-                            mapOf(
-                                "progress" to updatedProgress,
-                                "isCompleted" to isCompleted
-                            )
-                        ).await()
+                        val updatedUserAchievement = userAchievement.copy(
+                            progress = updatedProgress,
+                            isCompleted = isCompleted,
+                            completedAt = if (isCompleted) Timestamp.now() else null
+                        )
+                        
+                        userAchievementDoc.set(updatedUserAchievement).await()
                         
                         // Check if newly completed
                         if (isCompleted && !userAchievement.isCompleted) {
+                            awardQuestCoins(achievement.questCoinsReward)
+                            _newlyCompleted.value = Event(updatedUserAchievement)
                             addPoints(achievement.questCoinsReward)
-                            _newAchievementUnlocked.value = userAchievement.copy(
-                                progress = updatedProgress,
-                                isCompleted = true
-                            )
                         }
                     }
+                    
+                    // Reload user achievements
+                    loadUserData()
                 }
-                
-                // Reload user data
-                loadUserData()
-                
             } catch (e: Exception) {
                 _error.value = "Failed to update achievement progress: ${e.message}"
             }
         }
     }
 
-    /**
-     * Auto-evaluate achievements based on user data
-     */
+    private fun awardQuestCoins(amount: Int) {
+        viewModelScope.launch {
+            try {
+                val userId = auth.currentUser?.uid ?: return@launch
+                val questCoinsRef = db.collection("users")
+                    .document(userId)
+                    .collection("questCoins")
+                    .document("balance")
+                
+                db.runTransaction { transaction ->
+                    val snapshot = transaction.get(questCoinsRef)
+                    val currentBalance = snapshot.getLong("currentBalance") ?: 0
+                    val totalEarned = snapshot.getLong("totalEarned") ?: 0
+                    
+                    transaction.update(questCoinsRef, mapOf(
+                        "currentBalance" to (currentBalance + amount),
+                        "totalEarned" to (totalEarned + amount),
+                        "lastUpdated" to Timestamp.now()
+                    ))
+                }.await()
+                
+                // Reload quest coins
+                loadQuestCoins()
+            } catch (e: Exception) {
+                _error.value = "Failed to award quest coins: ${e.message}"
+            }
+        }
+    }
+
     fun evaluateAchievements() {
         viewModelScope.launch {
             try {
                 evaluator.evaluateUserAchievements()
-                
-                // Reload user data after evaluation
-                loadUserData()
-                
-                // Check for new achievements
-                checkForNewAchievements()
-                
+                loadUserData() // Reload user data after evaluation
             } catch (e: Exception) {
                 _error.value = "Failed to evaluate achievements: ${e.message}"
             }
         }
     }
 
-    private fun evaluateFirstExpense(userId: String, transactions: List<Transaction>) {
-        val hasExpense = transactions.any { it.type == TransactionType.EXPENSE }
-        if (hasExpense) {
-            updateAchievementProgress("first_expense", 1)
-        }
-    }
-
-    private fun evaluateFirstIncome(userId: String, transactions: List<Transaction>) {
-        val hasIncome = transactions.any { it.type == TransactionType.INCOME }
-        if (hasIncome) {
-            updateAchievementProgress("first_income", 1)
-        }
-    }
-
-    private fun evaluateBigSaver(userId: String, accounts: List<Account>) {
-        val totalSaved = accounts
-            .filter { it.type.equals("Savings", ignoreCase = true) }
-            .sumOf { it.balance }
-        
-        if (totalSaved >= 1000) {
-            updateAchievementProgress("big_saver", totalSaved.toInt())
-        }
-    }
-
-    private fun evaluateEmergencyFund(userId: String, accounts: List<Account>, categories: List<Category>) {
-        val emergencyTotal = accounts
-            .filter { it.type.equals("Emergency", ignoreCase = true) }
-            .sumOf { it.balance }
-
-        val emergencyGoal = categories
-            .find { it.name.equals("Emergency", ignoreCase = true) }
-            ?.maxBudget ?: 1000.0
-
-        if (emergencyTotal >= emergencyGoal) {
-            updateAchievementProgress("emergency_fund", emergencyTotal.toInt())
-        }
-    }
-
-    private fun evaluateCategoryMaster(userId: String, categories: List<Category>) {
-        val customCategories = categories.count { it.type == CategoryType.CUSTOM }
-        if (customCategories >= 3) {
-            updateAchievementProgress("category_master", customCategories)
-        }
-    }
-
-    private fun evaluateDailyTracker(userId: String, transactions: List<Transaction>) {
-        // This is a simplified version - in a real app you'd track daily usage
-        val oneWeekAgo = java.util.Date(System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000)
-        val recentTransactions = transactions.filter { 
-            it.date.toDate().after(oneWeekAgo)
-        }
-        val uniqueDays = recentTransactions.map { it.date.toDate() }.distinct().size
-        updateAchievementProgress("daily_tracker", uniqueDays)
-    }
-
-    private fun evaluateBudgetingBeginner(userId: String, userDoc: com.google.firebase.firestore.DocumentSnapshot) {
-        val hasCompletedOnboarding = userDoc.getBoolean("hasCompletedOnboarding") ?: false
-        if (hasCompletedOnboarding) {
-            updateAchievementProgress("budgeting_beginner", 1)
-        }
-    }
-
-    fun loadUserData() {
-        val userId = auth.currentUser?.uid ?: return
-        
-        viewModelScope.launch {
-            try {
-                // Load user achievements
-                val userSnapshot = db.collection("users")
-                    .document(userId)
-                    .collection("achievements")
-                    .get()
-                    .await()
-                
-                val userAchievementList = userSnapshot.documents.mapNotNull { doc ->
-                    doc.toObject(Achievement::class.java)
-                }
-                
-                _userAchievements.value = userAchievementList
-                
-                // Load quest coins
-                val userDoc = db.collection("users").document(userId).get().await()
-                val coins = userDoc.getLong("questCoins") ?: 0
-                _questCoins.value = QuestCoins(
-                    userId = userId,
-                    totalEarned = coins.toInt(),
-                    totalRedeemed = 0,
-                    currentBalance = coins.toInt(),
-                    lastUpdated = Date()
-                )
-                
-            } catch (e: Exception) {
-                _error.value = "Failed to load user data: ${e.message}"
-            }
-        }
-    }
-
-    private suspend fun checkForNewAchievements() {
-        val userId = auth.currentUser?.uid ?: return
-        val previousAchievements = _userAchievements.value?.size ?: 0
-        
-        val userSnapshot = db.collection("users")
-            .document(userId)
-            .collection("achievements")
-            .get()
-            .await()
-        
-        val currentAchievements = userSnapshot.documents.mapNotNull { doc ->
-            doc.toObject(Achievement::class.java)
-        }
-        
-        if (currentAchievements.size > previousAchievements) {
-            // Find the newest achievement
-            val newAchievement = currentAchievements.maxByOrNull { it.completedAt?.toDate() ?: java.util.Date(0) }
-            if (newAchievement != null) {
-                _newAchievementUnlocked.value = newAchievement
-                
-                // Check for level up
-                checkForLevelUp()
-            }
-        }
-    }
-    
-    private suspend fun checkForLevelUp() {
-        val userId = auth.currentUser?.uid ?: return
-        
-        val userDoc = db.collection("users").document(userId).get().await()
-        val currentCoins = userDoc.getLong("questCoins") ?: 0
-        val currentLevel = userDoc.getLong("level") ?: 1
-        
-        val newLevel = calculateLevel(currentCoins.toInt())
-        
-        if (newLevel > currentLevel) {
-            // Update user level
-            db.collection("users").document(userId)
-                .update("level", newLevel)
-                .await()
-            
-            _levelUp.value = newLevel.toInt()
-        }
-    }
-    
-    private fun calculateLevel(coins: Int): Long {
-        // Level calculation: every 1000 coins = 1 level
-        return (coins / 1000 + 1).toLong()
+    fun refreshData() {
+        loadAchievements()
+        loadQuestCoins()
+        loadUserData()
     }
 
     fun getAchievementsByCategory(category: String): List<Achievement> {
@@ -478,12 +408,6 @@ class AchievementViewModel(
     
     fun clearError() {
         _error.value = null
-    }
-    
-    fun refresh() {
-        loadAchievements()
-        loadUserData()
-        evaluateAchievements()
     }
     
     data class AchievementProgress(

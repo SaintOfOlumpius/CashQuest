@@ -33,6 +33,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import android.app.AlertDialog
 import androidx.core.content.ContextCompat
+import com.opsc6311.poe.data.services.AchievementSeedService
 
 class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -111,6 +112,13 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         model.error.observe(this) { error ->
             error?.let {
                 Snackbar.make(binds.root, it, Snackbar.LENGTH_LONG).show()
+            }
+        }
+
+        model.isLoading.observe(this) { isLoading ->
+            // Show/hide loading indicator
+            if (isLoading) {
+                // You can add a loading indicator here if needed
             }
         }
 
@@ -363,13 +371,23 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun autoEvaluateAchievements() {
+        // Evaluate achievements on page load
         model.evaluateAchievements()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
+            R.id.action_evaluate_achievements -> {
+                model.evaluateAchievements()
+                Snackbar.make(binds.root, "Evaluating achievements...", Snackbar.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_refresh -> {
+                refreshAchievements()
+                true
+            }
+            R.id.action_seed_achievements -> {
+                seedAchievements()
                 true
             }
             R.id.action_filter_all -> {
@@ -407,14 +425,6 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
                 filterAchievements()
                 true
             }
-            R.id.action_seed_achievements -> {
-                seedAchievements()
-                true
-            }
-            R.id.action_evaluate_achievements -> {
-                evaluateAchievements()
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -427,6 +437,16 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setupClickListeners() {
         binds.redeemButton.setOnClickListener(this)
+        
+        // Add refresh functionality
+        binds.swipeRefreshLayout.setOnRefreshListener {
+            refreshAchievements()
+        }
+        
+        // Add manual evaluation button if you have one
+        // binds.evaluateButton.setOnClickListener {
+        //     model.evaluateAchievements()
+        // }
     }
 
     private fun setupToolbar() {
@@ -450,8 +470,10 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
     private fun seedAchievements() {
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                SeedData.seedAchievements()
-                Snackbar.make(binds.root, "Achievements seeded successfully!", Snackbar.LENGTH_LONG).show()
+                val seedService = AchievementSeedService()
+                seedService.seedAchievements()
+                Snackbar.make(binds.root, "Achievements seeded successfully!", Snackbar.LENGTH_SHORT).show()
+                refreshAchievements()
             } catch (e: Exception) {
                 Snackbar.make(binds.root, "Failed to seed achievements: ${e.message}", Snackbar.LENGTH_LONG).show()
             }
@@ -591,38 +613,27 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
         val allAchievements = model.achievements.value ?: emptyList()
         val userAchievements = model.userAchievements.value ?: emptyList()
         
-        var filteredAchievements = allAchievements
-        
-        // Apply category filter
-        currentFilter?.let { category ->
-            filteredAchievements = filteredAchievements.filter { it.category == category }
+        // Merge achievements with user progress
+        val mergedAchievements = allAchievements.map { achievement ->
+            val userAchievement = userAchievements.find { it.id == achievement.id }
+            userAchievement ?: achievement.copy(
+                progress = 0,
+                isCompleted = false,
+                completedAt = null
+            )
         }
         
-        // Apply search filter
-        if (searchQuery.isNotEmpty()) {
-            filteredAchievements = filteredAchievements.filter { achievement ->
+        // Apply filters
+        val filteredAchievements = mergedAchievements.filter { achievement ->
+            val matchesCategory = currentFilter == null || achievement.category == currentFilter
+            val matchesSearch = searchQuery.isEmpty() || 
                 achievement.title.contains(searchQuery, ignoreCase = true) ||
-                achievement.description.contains(searchQuery, ignoreCase = true) ||
-                achievement.category.name.contains(searchQuery, ignoreCase = true)
-            }
+                achievement.description.contains(searchQuery, ignoreCase = true)
+            
+            matchesCategory && matchesSearch
         }
         
-        // Merge with user progress
-        val userAchievementMap = userAchievements.associateBy { it.id }
-        val mergedAchievements = filteredAchievements.map { achievement ->
-            val userAchievement = userAchievementMap[achievement.id]
-            if (userAchievement != null) {
-                achievement.copy(
-                    progress = userAchievement.progress,
-                    isCompleted = userAchievement.isCompleted,
-                    completedAt = userAchievement.completedAt
-                )
-            } else {
-                achievement
-            }
-        }
-        
-        adapter.submitList(mergedAchievements)
+        adapter.submitList(filteredAchievements)
     }
 
     private fun evaluateAchievements() {
@@ -647,5 +658,15 @@ class AchievementsActivity : AppCompatActivity(), View.OnClickListener {
             .create()
         
         dialog.show()
+    }
+
+    private fun refreshAchievements() {
+        model.refreshData()
+        binds.swipeRefreshLayout.isRefreshing = false
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.achievements_menu, menu)
+        return true
     }
 }
