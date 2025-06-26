@@ -113,4 +113,14 @@
     <color name="category_badge_background">#FF6B35</color>
     <color name="progress_track_dark">#40FFFFFF</color>
     <color name="progress_indicator_achievement">#FFD700</color>
+
+    <!-- Premium Design Colors -->
+    <color name="premium_gold">#FFD700</color>
+    <color name="premium_silver">#C0C0C0</color>
+    <color name="premium_bronze">#CD7F32</color>
+    <color name="glass_effect">#20FFFFFF</color>
+    <color name="premium_glow">#40FFFFFF</color>
+    <color name="subtle_shadow">#20000000</color>
+    <color name="premium_border">#60FFFFFF</color>
+    <color name="premium_highlight">#80FFFFFF</color>
 </resources>

@@ -45,6 +45,28 @@
     <string name="login_successful">Login successful</string>
     <string name="registration_successful">Registration successful</string>
 
+    <!-- Enhanced Sign-In Page -->
+    <string name="welcome_back">Welcome Back</string>
+    <string name="sign_in_journey">Sign in to continue your financial journey</string>
+    <string name="email_address">Email Address</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_biometrics">Sign in with Biometrics</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="smart_financial_management">Smart Financial Management</string>
+
+    <!-- Enhanced Sign-Up Page -->
+    <string name="join_us_message">Join us and take control of your financial future</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="password_requirements">Password Requirements</string>
+    <string name="requirement_length">• At least 8 characters</string>
+    <string name="requirement_uppercase">• At least 1 uppercase letter</string>
+    <string name="requirement_lowercase">• At least 1 lowercase letter</string>
+    <string name="requirement_number">• At least 1 number</string>
+    <string name="requirement_special">• At least 1 special character</string>
+
     <!-- PermissionX -->
 
     <string name="permx_explain_scope_description">
